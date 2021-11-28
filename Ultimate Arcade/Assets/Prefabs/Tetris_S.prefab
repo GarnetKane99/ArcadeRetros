@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1558881700387426948}
   - component: {fileID: 1558881700387426949}
   - component: {fileID: 7550620394954144157}
+  - component: {fileID: 4038022716517259604}
   m_Layer: 0
   m_Name: Tetris_Purple (2)
   m_TagString: Untagged
@@ -109,6 +110,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4038022716517259604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558881700387426955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Neighbours: []
+  CurrentPos: {x: 0, y: 0, z: 0}
+  CurrentRot: {x: 0, y: 0, z: 0}
+  TetrisSprite: {fileID: 0}
 --- !u!1 &1558881700738009627
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,6 +137,7 @@ GameObject:
   - component: {fileID: 1558881700738009620}
   - component: {fileID: 1558881700738009621}
   - component: {fileID: 5878328094987905588}
+  - component: {fileID: 2499790633662510527}
   m_Layer: 0
   m_Name: Tetris_Purple (1)
   m_TagString: Untagged
@@ -218,6 +236,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2499790633662510527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558881700738009627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Neighbours: []
+  CurrentPos: {x: 0, y: 0, z: 0}
+  CurrentRot: {x: 0, y: 0, z: 0}
+  TetrisSprite: {fileID: 0}
 --- !u!1 &1558881701082945214
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +263,7 @@ GameObject:
   - component: {fileID: 1558881701082945215}
   - component: {fileID: 1558881701082945208}
   - component: {fileID: 8811313222696301958}
+  - component: {fileID: 446213873260177619}
   m_Layer: 0
   m_Name: Tetris_Purple (3)
   m_TagString: Untagged
@@ -327,6 +362,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &446213873260177619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558881701082945214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Neighbours: []
+  CurrentPos: {x: 0, y: 0, z: 0}
+  CurrentRot: {x: 0, y: 0, z: 0}
+  TetrisSprite: {fileID: 0}
 --- !u!1 &1558881701572767911
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,6 +389,7 @@ GameObject:
   - component: {fileID: 1558881701572767904}
   - component: {fileID: 1558881701572767905}
   - component: {fileID: 8389442174598602890}
+  - component: {fileID: 3338648026645125914}
   m_Layer: 0
   m_Name: Tetris_Purple
   m_TagString: Untagged
@@ -436,6 +488,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3338648026645125914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558881701572767911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Neighbours: []
+  CurrentPos: {x: 0, y: 0, z: 0}
+  CurrentRot: {x: 0, y: 0, z: 0}
+  TetrisSprite: {fileID: 0}
 --- !u!1 &1558881701751438831
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1558881701751438824}
   - component: {fileID: -4415929026617835421}
+  - component: {fileID: 2267802235529570683}
   m_Layer: 0
   m_Name: Tetris_S
   m_TagString: Untagged
@@ -478,7 +547,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558881701751438831}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df79206b31c1dc24b937a4b8e460f93f, type: 3}
   m_Name: 
@@ -486,4 +555,23 @@ MonoBehaviour:
   CurrentPos: {x: 0, y: 0}
   CurrentRot: {x: 0, y: 0, z: 0}
   DirToGo: {x: 0, y: 0}
+  IndividualPieces:
+  - {fileID: 1558881701572767911}
+  - {fileID: 1558881700738009627}
+  - {fileID: 1558881700387426955}
+  - {fileID: 1558881701082945214}
   RotationValue: {x: 0, y: 0}
+--- !u!114 &2267802235529570683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558881701751438831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9180f0101126942914c88c29050671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CoordinatePieces: []
+  DirToGo: {x: 0, y: 0}

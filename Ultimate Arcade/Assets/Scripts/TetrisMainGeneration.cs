@@ -20,7 +20,7 @@ public class TetrisMainGeneration : MonoBehaviour
         
     }
 
-    void GenerateBlock()
+    public void GenerateBlock()
     {
         int RandomBlock = Random.Range(0, 7);
         GameObject CurPiece = Instantiate(POSSIBLE_PIECES[RandomBlock], SPAWN_POS);
