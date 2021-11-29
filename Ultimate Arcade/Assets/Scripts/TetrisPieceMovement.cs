@@ -13,11 +13,13 @@ public class TetrisPieceMovement : MonoBehaviour
     private TetrisBoardManager GridManager;
     private TetrisMainGeneration PieceGenerator;
     public int yOffset = -1;//, xOffset = -10;
+    public int xOffset = 4;
     int[,] TetrisGrid;
     int[,] CurrentPosition;
 
-    [SerializeField]
-    private bool CurrentlyControlling = false;
+    [SerializeField] private bool CurrentlyControlling = false;
+    [SerializeField] private bool OnExistingBlock = false;
+    [SerializeField] private float allowedTimeOnBlock = 1.0f; //variable will be updated/initialized as game progressess
 
     private void Awake()
     {
@@ -35,7 +37,7 @@ public class TetrisPieceMovement : MonoBehaviour
         {
             InitializeBlockSpawnPos();
         }
-        InvokeRepeating("BlockDescent", 1.0f, 1.0f);
+        InvokeRepeating("BlockDescent", 1.0f, 0.5f);
     }
 
     string FoundPiece()
@@ -113,22 +115,30 @@ public class TetrisPieceMovement : MonoBehaviour
 
     void BlockDescent()
     {
-        yOffset--;
+        Debug.Log("Descending");
         for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
         {
             for (int x = 0; x < TetrisGrid.GetLength(0); x++)
             {
                 if (TetrisGrid[x, y] == 1)
                 {
-                    if (GridManager.GridSize[x + 4, GridManager.GridSize.GetLength(1) + yOffset+y-1] == 2)
+                    if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
                     {
                         Invoke("LastSecondChanges", 1.5f);
                         CancelInvoke("BlockDescent");
                         return;
                     }
+                    else if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 3)
+                    {
+                        OnExistingBlock = true;
+                        return;
+                    }
                 }
             }
         }
+        OnExistingBlock = false;
+        allowedTimeOnBlock = 1.0f;
+        yOffset--;
 
         for (int y = CurrentPosition.GetLength(1) - 1; y >= 0; y--)
         {
@@ -142,48 +152,14 @@ public class TetrisPieceMovement : MonoBehaviour
             }
         }
 
-        /*        for (int x = 0; x < CurrentPosition.GetLength(0); x++)
-                {
-                    for (int y = 0; y < CurrentPosition.GetLength(1); y++)
-                    {
-                        if (CurrentPosition[x, y] == 1)
-                        {
-                            GridManager.GridSize[x, y] = 0;
-                            CurrentPosition[x, y] = 0;
-                        }
-                    }
-                }*/
-
-        /*        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
-                {
-                    for (int x = 0; x < TetrisGrid.GetLength(0); x++)
-                    {
-                        if (TetrisGrid[x, y] == 1)
-                        {
-                            GridManager.GridSize[x, y] = TetrisGrid[x, y];
-                        }
-                    }
-                }*/
-
-        /*        for (int y = GridManager.GridSize.GetLength(1) - 1; y >= 0; y--)
-                {
-                    for (int x = 0; x < GridManager.GridSize.GetLength(0); x++)
-                    {
-                        if (TetrisGrid[x, y] == 1)
-                        {
-                            GridManager.GridSize[x + xOffset, y + yOffset] = TetrisGrid[x, y];
-                        }
-                    }
-                }*/
-
         for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
         {
             for (int x = 0; x < TetrisGrid.GetLength(0); x++)
             {
                 if (TetrisGrid[x, y] == 1)
                 {
-                    GridManager.GridSize[x + 4, GridManager.GridSize.GetLength(1) + yOffset + y-1] = TetrisGrid[x, y];
-                    CurrentPosition[x + 4, CurrentPosition.GetLength(1) + yOffset + y-1] = TetrisGrid[x, y];
+                    GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
+                    CurrentPosition[x + xOffset, CurrentPosition.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
                 }
             }
         }
@@ -200,7 +176,7 @@ public class TetrisPieceMovement : MonoBehaviour
             {
                 if (CurrentPosition[y, x] == 1)
                 {
-                    GridManager.GridSize[y, x] = 2;
+                    GridManager.GridSize[y, x] = 3;
                 }
             }
         }
@@ -209,59 +185,27 @@ public class TetrisPieceMovement : MonoBehaviour
         PieceGenerator.GenerateBlock();
     }
 
-    void UpdateTetrisGrid(string Found)
+    void RapidUpdates()
     {
-        switch (Found)
+        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
         {
-            case "Tetris_L":
-                TetrisGrid = new int[3, 3]
+            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+            {
+                if (TetrisGrid[x, y] == 1)
                 {
-                    {0,0,2 },
-                    {2,2,2 },
-                    {0,0,0 }
-                };
-                break;
-            case "Tetris_J":
-                TetrisGrid = new int[3, 3]
-                {
-                    {2,0,0 },
-                    {2,2,2 },
-                    {0,0,0 }
-                };
-                break;
-            case "Tetris_T":
-                TetrisGrid = new int[3, 3]
-                {
-                    {0,2,0 },
-                    {2,2,2 },
-                    {0,0,0 }
-                };
-                break;
-            case "Tetris_S":
-                TetrisGrid = new int[3, 3]
-                {
-                    {0,2,2 },
-                    {2,2,0 },
-                    {0,0,0 }
-                };
-                break;
-            case "Tetris_Z":
-                TetrisGrid = new int[3, 3]
-                {
-                    {2,2,0 },
-                    {0,2,2 },
-                    {0,0,0 }
-                };
-                break;
-            case "Tetris_I":
-                TetrisGrid = new int[4, 4]
-                {
-                    {0,0,0,0 },
-                    {2,2,2,2 },
-                    {0,0,0,0 },
-                    {0,0,0,0 }
-                };
-                break;
+                    if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2)
+                    {
+                        Invoke("LastSecondChanges", 1.5f);
+                        CancelInvoke("BlockDescent");
+                        return;
+                    }
+                    else if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3)
+                    {
+                        //OnExistingBlock = true;
+                        return;
+                    }
+                }
+            }
         }
     }
 
@@ -272,9 +216,23 @@ public class TetrisPieceMovement : MonoBehaviour
         {
             GetInput();
             UpdateBlockPos();
+        }
+        if (OnExistingBlock)
+        {
+            allowedTimeOnBlock -= Time.deltaTime;
             //UpdateCoordinates();
+            RapidUpdates();
+            if (allowedTimeOnBlock <= 0)
+            {
+                LastSecondChanges();
+                CancelInvoke("BlockDescent");
+                gameObject.transform.position = CurrentPos;
+                CurrentlyControlling = false;
+                OnExistingBlock = false;
+            }
         }
 
+        //used to show block type
         StringBuilder sb = new StringBuilder();
         for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
         {
@@ -325,55 +283,69 @@ public class TetrisPieceMovement : MonoBehaviour
         {
             if (DirToGo.x > 0)
             {
-                //xOffset += 1;
+                for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+                {
+                    for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+                    {
+                        if (TetrisGrid[x, y] == 1)
+                        {
+                            if (GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2 || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+                xOffset += 1;
                 CurrentPos.x += 1;
             }
             else if (DirToGo.x < 0)
             {
-                //xOffset -= 1;
+                for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+                {
+                    for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+                    {
+                        if (TetrisGrid[x, y] == 1)
+                        {
+                            if (GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2 || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+                xOffset -= 1;
                 CurrentPos.x -= 1;
             }
+            UpdateCoordinates();
+            gameObject.transform.position = CurrentPos;
         }
     }
 
     void UpdateCoordinates()
     {
-        /*        //Tetris piece update
-                gameObject.transform.position = CurrentPos;
-                //Grid coordinates
-                for (int y = 0; y < TetrisGrid.GetLength(1); y++)
+        for (int y = CurrentPosition.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < CurrentPosition.GetLength(0); x++)
+            {
+                if (CurrentPosition[x, y] == 1)
                 {
-                    for (int x = 0; x < TetrisGrid.GetLength(0); x++)
-                    {
-                        if (GridManager.GridSize[y - yOffset, x + xOffset] == 2)
-                        {
-                            return;
-                        }
-                    }
+                    GridManager.GridSize[x, y] = 0;
+                    CurrentPosition[x, y] = 0;
                 }
+            }
+        }
 
-                for (int x = 0; x < CurrentPosition.GetLength(1); x++)
+        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+            {
+                if (TetrisGrid[x, y] == 1)
                 {
-                    for (int y = 0; y < CurrentPosition.GetLength(0); y++)
-                    {
-                        if (CurrentPosition[y, x] == 1)
-                        {
-                            GridManager.GridSize[y, x] = 0;
-                            CurrentPosition[y, x] = 0;
-                        }
-                    }
+                    GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
+                    CurrentPosition[x + xOffset, CurrentPosition.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
                 }
-
-                for (int y = 0; y < TetrisGrid.GetLength(0); y++)
-                {
-                    for (int x = 0; x < TetrisGrid.GetLength(1); x++)
-                    {
-                        if (TetrisGrid[y, x] == 1)
-                        {
-                            GridManager.GridSize[y - yOffset, x + xOffset] = TetrisGrid[y, x];
-                            CurrentPosition[y - yOffset, x + xOffset] = TetrisGrid[y, x];
-                        }
-                    }
-                }*/
+            }
+        }
     }
 }

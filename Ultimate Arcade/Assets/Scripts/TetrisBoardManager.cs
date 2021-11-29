@@ -74,7 +74,7 @@ public class TetrisBoardManager : MonoBehaviour
             {
                 if(y == GridSize.GetLength(1) - 1)
                 {
-                    GridSize[x, y] = 3;
+                    GridSize[x, y] = 0;
                 }
                 sb.Append(GridSize[x, y]);
                 sb.Append(' ');
