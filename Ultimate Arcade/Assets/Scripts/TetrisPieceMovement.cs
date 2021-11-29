@@ -180,11 +180,11 @@ public class TetrisPieceMovement : MonoBehaviour
                 }
             }
         }
-
         CurrentlyControlling = false;
         PieceGenerator.GenerateBlock();
     }
 
+    //not sure if this matters yet
     void RapidUpdates()
     {
         for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
@@ -217,11 +217,15 @@ public class TetrisPieceMovement : MonoBehaviour
             GetInput();
             UpdateBlockPos();
         }
+        else
+        {
+            gameObject.transform.position = CurrentPos;
+        }
         if (OnExistingBlock)
         {
             allowedTimeOnBlock -= Time.deltaTime;
             //UpdateCoordinates();
-            RapidUpdates();
+            //RapidUpdates();
             if (allowedTimeOnBlock <= 0)
             {
                 LastSecondChanges();

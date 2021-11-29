@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3980389385149861026}
-  - component: {fileID: 8636876432497429268}
   - component: {fileID: 6987372351407538717}
   m_Layer: 0
   m_Name: Tetris_O
@@ -36,27 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8636876432497429268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3980389385149861027}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df79206b31c1dc24b937a4b8e460f93f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurrentPos: {x: 0, y: 0}
-  CurrentRot: {x: 0, y: 0, z: 0}
-  DirToGo: {x: 0, y: 0}
-  IndividualPieces:
-  - {fileID: 3980389386525430951}
-  - {fileID: 3980389385342660185}
-  - {fileID: 3980389386804128098}
-  - {fileID: 3980389385585649759}
-  RotationValue: {x: 0, y: 0}
 --- !u!114 &6987372351407538717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +51,10 @@ MonoBehaviour:
   DirToGo: {x: 0, y: 0}
   CurrentPos: {x: 0, y: 0}
   yOffset: -1
+  xOffset: 4
   CurrentlyControlling: 0
+  OnExistingBlock: 0
+  allowedTimeOnBlock: 1
 --- !u!1 &3980389385342660185
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +66,6 @@ GameObject:
   - component: {fileID: 3980389385342660184}
   - component: {fileID: 3980389385342660183}
   - component: {fileID: 5414977733567676608}
-  - component: {fileID: 7266254669784330282}
   m_Layer: 0
   m_Name: Tetris_Yellow (1)
   m_TagString: Untagged
@@ -184,22 +164,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7266254669784330282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3980389385342660185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Neighbours: []
-  CurrentPos: {x: 0, y: 0, z: 0}
-  CurrentRot: {x: 0, y: 0, z: 0}
-  TetrisSprite: {fileID: 0}
 --- !u!1 &3980389385585649759
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +175,6 @@ GameObject:
   - component: {fileID: 3980389385585649758}
   - component: {fileID: 3980389385585649757}
   - component: {fileID: 6168692165324175140}
-  - component: {fileID: 2481718495812301910}
   m_Layer: 0
   m_Name: Tetris_Yellow (3)
   m_TagString: Untagged
@@ -310,22 +273,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2481718495812301910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3980389385585649759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Neighbours: []
-  CurrentPos: {x: 0, y: 0, z: 0}
-  CurrentRot: {x: 0, y: 0, z: 0}
-  TetrisSprite: {fileID: 0}
 --- !u!1 &3980389386525430951
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +284,6 @@ GameObject:
   - component: {fileID: 3980389386525430950}
   - component: {fileID: 3980389386525430949}
   - component: {fileID: 7935484848238776599}
-  - component: {fileID: 4775649058530448415}
   m_Layer: 0
   m_Name: Tetris_Yellow
   m_TagString: Untagged
@@ -436,22 +382,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4775649058530448415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3980389386525430951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Neighbours: []
-  CurrentPos: {x: 0, y: 0, z: 0}
-  CurrentRot: {x: 0, y: 0, z: 0}
-  TetrisSprite: {fileID: 0}
 --- !u!1 &3980389386804128098
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,7 +393,6 @@ GameObject:
   - component: {fileID: 3980389386804128097}
   - component: {fileID: 3980389386804128096}
   - component: {fileID: 8769150811280761595}
-  - component: {fileID: 5631854747999103483}
   m_Layer: 0
   m_Name: Tetris_Yellow (2)
   m_TagString: Untagged
@@ -562,19 +491,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5631854747999103483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3980389386804128098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d918a10844516fe47a15dec7597fe192, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Neighbours: []
-  CurrentPos: {x: 0, y: 0, z: 0}
-  CurrentRot: {x: 0, y: 0, z: 0}
-  TetrisSprite: {fileID: 0}
