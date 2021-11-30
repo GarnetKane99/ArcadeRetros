@@ -23,6 +23,7 @@ public class TetrisMainGeneration : MonoBehaviour
     public void GenerateBlock()
     {
         int RandomBlock = Random.Range(0, 7);
+        //int RandomBlock = 6;
         GameObject CurPiece = Instantiate(POSSIBLE_PIECES[RandomBlock], SPAWN_POS);
         CurPiece.transform.parent = null;
     }
