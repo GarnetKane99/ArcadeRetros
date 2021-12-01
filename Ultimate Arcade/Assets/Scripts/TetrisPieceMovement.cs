@@ -252,7 +252,7 @@ public class TetrisPieceMovement : MonoBehaviour
             sb.AppendLine();
         }
 
-        //Debug.Log(sb.ToString());
+        Debug.Log(sb.ToString());
     }
 
     void GetInput()
@@ -339,6 +339,23 @@ public class TetrisPieceMovement : MonoBehaviour
                 //Pieces J,L,T,S,Z
                 if (DirToGo.y > 0)
                 {
+                    int tempZoffset = zOffset;
+                    switch (zOffset)
+                    {
+                        case 0:
+                            zOffset = 1;
+                            break;
+                        case 1:
+                            zOffset = 2;
+                            break;
+                        case 2:
+                            zOffset = 3;
+                            break;
+                        case 3:
+                            zOffset = 0;
+                            break;
+                    }
+
                     for (int i = 0; i < 5; i++)
                     {
                         if (TestPositiveRotation(i))
@@ -346,9 +363,11 @@ public class TetrisPieceMovement : MonoBehaviour
                             return;
                         }
                     }
+                    zOffset = tempZoffset;
                 }
                 else if (DirToGo.y < 0)
                 {
+                    int tempZoffset = zOffset;
                     switch (zOffset)
                     {
                         case 1:
@@ -373,112 +392,85 @@ public class TetrisPieceMovement : MonoBehaviour
                             return;
                         }
                     }
+                    zOffset = tempZoffset;
                 }
             }
             //I Piece rotation algorithm
             else if (TetrisPieceName() == "Tetris_I")
             {
+                if (DirToGo.y > 0)
+                {
+                    int tempZoffset = zOffset;
+                    switch (zOffset)
+                    {
+                        case 0:
+                            zOffset = 1;
+                            break;
+                        case 1:
+                            zOffset = 2;
+                            break;
+                        case 2:
+                            zOffset = 3;
+                            break;
+                        case 3:
+                            zOffset = 0;
+                            break;
+                    }
 
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (TestIPositiveRotation(i))
+                        {
+                            return;
+                        }
+                    }
+                    zOffset = tempZoffset;
+                }
+                else if (DirToGo.y < 0)
+                {
+                    int tempZoffset = zOffset;
+                    switch (zOffset)
+                    {
+                        case 1:
+                            zOffset = 0;
+                            break;
+                        case 2:
+                            zOffset = 1;
+                            break;
+                        case 3:
+                            zOffset = 2;
+                            break;
+                        case 0:
+                            zOffset = 3;
+                            break;
+                    }
+
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (TestINegativeRotation(i))
+                        {
+                            return;
+                        }
+                    }
+                    zOffset = tempZoffset;
+                }
             }
         }
     }
 
-    string TetrisPieceName()
-    {
-        return name.Split('(')[0];
-    }
-
     bool TestPositiveRotation(int TestNum)
     {
-        int tempXOffset = 0;
-        int tempYOffset = 0;
-        switch (zOffset)
+        Vector2[,] offsetFound = new Vector2[,]
         {
-            case 0:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = -1;
-                        break;
-                    case 2:
-                        tempXOffset = -1;
-                        tempYOffset = 1;
-                        break;
-                    case 3:
-                        tempYOffset = -2;
-                        break;
-                    case 4:
-                        tempXOffset = -1;
-                        tempYOffset = -2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 1:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = 1;
-                        break;
-                    case 2:
-                        tempXOffset = 1;
-                        tempYOffset = -1;
-                        break;
-                    case 3:
-                        tempYOffset = 2;
-                        break;
-                    case 4:
-                        tempXOffset = 1;
-                        tempYOffset = 2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 2:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = 1;
-                        break;
-                    case 2:
-                        tempXOffset = 1;
-                        tempYOffset = 1;
-                        break;
-                    case 3:
-                        tempYOffset = -2;
-                        break;
-                    case 4:
-                        tempXOffset = 1;
-                        tempYOffset = -2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 3:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = -1;
-                        break;
-                    case 2:
-                        tempXOffset = -1;
-                        tempYOffset = -1;
-                        break;
-                    case 3:
-                        tempYOffset = 2;
-                        break;
-                    case 4:
-                        tempXOffset = -1;
-                        tempYOffset = 2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-        }
+            {new Vector2(0,0),new Vector2(-1,0), new Vector2(-1,1), new Vector2(0,-2), new Vector2(-1,-2) },
+            {new Vector2(0,0), new Vector2(1,0), new Vector2(1,-1), new Vector2(0,2), new Vector2(1,2) },
+            {new Vector2(0,0), new Vector2(1,0), new Vector2(1,1), new Vector2(0,-2), new Vector2(1,-2)},
+            {new Vector2(0,0), new Vector2(-1, 0), new Vector2(-1,-1), new Vector2(0,2), new Vector2(-1,2) }
+        };
+
+        int tempXOffset = (int)offsetFound[zOffset, TestNum].x;
+        int tempYOffset = (int)offsetFound[zOffset, TestNum].y;
 
         int[,] tempVal = TetrisGrid;
         int matSize = tempVal.GetLength(0);
@@ -538,95 +530,16 @@ public class TetrisPieceMovement : MonoBehaviour
 
     bool TestNegativeRotation(int TestNum)
     {
-        int tempXOffset = 0;
-        int tempYOffset = 0;
-        switch (zOffset)
+        Vector2[,] offsetFound = new Vector2[,]
         {
-            case 0:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = 1;
-                        break;
-                    case 2:
-                        tempXOffset = 1;
-                        tempYOffset = -1;
-                        break;
-                    case 3:
-                        tempYOffset = 2;
-                        break;
-                    case 4:
-                        tempXOffset = 1;
-                        tempYOffset = 2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 1:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = -1;
-                        break;
-                    case 2:
-                        tempXOffset = -1;
-                        tempYOffset = 1;
-                        break;
-                    case 3:
-                        tempYOffset = -2;
-                        break;
-                    case 4:
-                        tempXOffset = -1;
-                        tempYOffset = -2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 2:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = -1;
-                        break;
-                    case 2:
-                        tempXOffset = -1;
-                        tempYOffset = -1;
-                        break;
-                    case 3:
-                        tempYOffset = 2;
-                        break;
-                    case 4:
-                        tempXOffset = -1;
-                        tempYOffset = 2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 3:
-                switch (TestNum)
-                {
-                    case 1:
-                        tempXOffset = 1;
-                        break;
-                    case 2:
-                        tempXOffset = 1;
-                        tempYOffset = 1;
-                        break;
-                    case 3:
-                        tempYOffset = -2;
-                        break;
-                    case 4:
-                        tempXOffset = 1;
-                        tempYOffset = -2;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-        }
+            {new Vector2(0,0),new Vector2(1,0), new Vector2(1,-1), new Vector2(0,2), new Vector2(1,2) },
+            {new Vector2(0,0), new Vector2(-1,0), new Vector2(-1,1), new Vector2(0,-2), new Vector2(-1,-2) },
+            {new Vector2(0,0), new Vector2(-1,0), new Vector2(-1,-1), new Vector2(0,2), new Vector2(-1,2)},
+            {new Vector2(0,0), new Vector2(1, 0), new Vector2(1,1), new Vector2(0,-2), new Vector2(1,-2) }
+        };
+
+        int tempXOffset = (int)offsetFound[zOffset, TestNum].x;
+        int tempYOffset = (int)offsetFound[zOffset, TestNum].y;
 
         int[,] tempVal = TetrisGrid;
         int matSize = tempVal.GetLength(0);
@@ -684,9 +597,156 @@ public class TetrisPieceMovement : MonoBehaviour
         return true;
     }
 
-    int FindOffset()
+    bool TestIPositiveRotation(int TestNum)
     {
-        return 0;
+        Vector2[,] offsetFound = new Vector2[,]
+        {
+            {new Vector2(0,0),new Vector2(1,0), new Vector2(-2,0), new Vector2(1,-2), new Vector2(-2,1) },
+            {new Vector2(0,1), new Vector2(-2,0), new Vector2(1,0), new Vector2(-2,-1), new Vector2(1,2) },
+            {new Vector2(0,0), new Vector2(-1,0), new Vector2(2,0), new Vector2(-1,2), new Vector2(2,-1)},
+            {new Vector2(0,-1), new Vector2(2,0), new Vector2(-1,0), new Vector2(2,1), new Vector2(-1,-2) }
+        };
+
+        int tempXOffset = (int)offsetFound[zOffset, TestNum].x;
+        int tempYOffset = (int)offsetFound[zOffset, TestNum].y;
+
+        int[,] tempVal = TetrisGrid;
+        int matSize = tempVal.GetLength(0);
+
+        //used to show block type
+        StringBuilder sb = new StringBuilder();
+        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+            {
+                sb.Append(TetrisGrid[x, y]);
+                sb.Append(' ');
+            }
+            sb.AppendLine();
+        }
+
+        //Debug.Log(sb.ToString());
+
+        //positive 90 algorithm
+        for (int x = 0; x < matSize / 2; x++)
+        {
+            for (int y = x; y < matSize - x - 1; y++)
+            {
+                int temp = tempVal[x, y];
+                tempVal[x, y] = tempVal[matSize - 1 - y, x];
+                tempVal[matSize - 1 - y, x] = tempVal[matSize - 1 - x, matSize - 1 - y];
+                tempVal[matSize - 1 - x, matSize - 1 - y] = tempVal[y, matSize - 1 - x];
+                tempVal[y, matSize - 1 - x] = temp;
+            }
+        }
+
+        //check if updated grid is able to rotate
+        for (int y = tempVal.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < tempVal.GetLength(0); x++)
+            {
+                if (tempVal[x, y] == 1)
+                {
+                    //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
+                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y - 1] == 3)
+                    {
+                        //negative 90 algorithm
+                        for (int x1 = 0; x1 < matSize / 2; x1++)
+                        {
+                            for (int y1 = x1; y1 < matSize - x1 - 1; y1++)
+                            {
+                                int temp = tempVal[x1, y1];
+                                tempVal[x1, y1] = tempVal[y1, matSize - 1 - x1];
+                                tempVal[y1, matSize - 1 - x1] = tempVal[matSize - 1 - x1, matSize - 1 - y1];
+                                tempVal[matSize - 1 - x1, matSize - 1 - y1] = tempVal[matSize - 1 - y1, x1];
+                                tempVal[matSize - 1 - y1, x1] = temp;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+
+        CurrentRot.z -= 90;
+        CurrentPos.x += tempXOffset;
+        xOffset += tempXOffset;
+        CurrentPos.y += tempYOffset;
+        yOffset += tempYOffset;
+        TetrisGrid = tempVal;
+        UpdateRotationCoordinates(tempXOffset, tempYOffset);
+        transform.rotation = Quaternion.Euler(CurrentRot);
+        transform.position = CurrentPos;
+        return true;
+    }
+
+    bool TestINegativeRotation(int TestNum)
+    {
+        Vector2[,] offsetFound = new Vector2[,]
+        {
+            {new Vector2(0,0),new Vector2(2,0), new Vector2(-1,0), new Vector2(2,1), new Vector2(-1,-2) },
+            {new Vector2(0,0), new Vector2(1,0), new Vector2(-2,0), new Vector2(1,-2), new Vector2(-2,1) },
+            {new Vector2(0,0), new Vector2(-2,0), new Vector2(1,0), new Vector2(-2,-1), new Vector2(1,2)},
+            {new Vector2(0,0), new Vector2(-1, 0), new Vector2(2,0), new Vector2(-1,2), new Vector2(2,-1) }
+        };
+
+        int tempXOffset = (int)offsetFound[zOffset, TestNum].x;
+        int tempYOffset = (int)offsetFound[zOffset, TestNum].y;
+
+        int[,] tempVal = TetrisGrid;
+        int matSize = tempVal.GetLength(0);
+
+        //negative 90 algorithm
+        for (int x = 0; x < matSize / 2; x++)
+        {
+            for (int y = x; y < matSize - x - 1; y++)
+            {
+                int temp = tempVal[x, y];
+                tempVal[x, y] = tempVal[y, matSize - 1 - x];
+                tempVal[y, matSize - 1 - x] = tempVal[matSize - 1 - x, matSize - 1 - y];
+                tempVal[matSize - 1 - x, matSize - 1 - y] = tempVal[matSize - 1 - y, x];
+                tempVal[matSize - 1 - y, x] = temp;
+            }
+        }
+
+        //check if updated grid is able to rotate
+        for (int y = tempVal.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < tempVal.GetLength(0); x++)
+            {
+                if (tempVal[x, y] == 1)
+                {
+                    //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
+                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y - 1] == 3)
+                    {
+                        //positive 90 algorithm
+                        for (int x1 = 0; x1 < matSize / 2; x1++)
+                        {
+                            for (int y1 = x1; y1 < matSize - x1 - 1; y1++)
+                            {
+                                int temp = tempVal[x1, y1];
+                                tempVal[x1, y1] = tempVal[matSize - 1 - y1, x1];
+                                tempVal[matSize - 1 - y1, x1] = tempVal[matSize - 1 - x1, matSize - 1 - y1];
+                                tempVal[matSize - 1 - x1, matSize - 1 - y1] = tempVal[y1, matSize - 1 - x1];
+                                tempVal[y1, matSize - 1 - x1] = temp;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+
+        CurrentRot.z += 90;
+        CurrentPos.x += tempXOffset;
+        xOffset += tempXOffset;
+        CurrentPos.y += tempYOffset;
+        yOffset += tempYOffset;
+        TetrisGrid = tempVal;
+        UpdateRotationCoordinates(tempXOffset, tempYOffset);
+        transform.rotation = Quaternion.Euler(CurrentRot);
+        transform.position = CurrentPos;
+        return true;
     }
 
     void UpdateCoordinates()
@@ -741,5 +801,10 @@ public class TetrisPieceMovement : MonoBehaviour
                 }
             }
         }
+    }
+
+    string TetrisPieceName()
+    {
+        return name.Split('(')[0];
     }
 }

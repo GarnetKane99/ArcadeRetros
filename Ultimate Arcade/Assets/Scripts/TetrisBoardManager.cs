@@ -32,21 +32,6 @@ public class TetrisBoardManager : MonoBehaviour
                     DrawGrid(x, y, 0);
                     GridSize[x, y] = 0;
                 }
-                /*                if (y == GridSize.GetLength(0) - 1 || x == 0 || x == GridSize.GetLength(1) - 1)
-                                {
-                                    DrawGrid(x, y, 1);
-                                    GridSize[x, y] = 2;
-                                }
-                                else if (y == 0)
-                                {
-                                    DrawGrid(x, y, 1);
-                                    GridSize[x, y] = 1;
-                                }
-                                else
-                                {
-                                    DrawGrid(x, y, 0);
-                                    GridSize[x, y] = 0;
-                                }*/
             }
         }
     }
