@@ -353,7 +353,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3454972168598115954}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3454972167554718961}
@@ -399,8 +399,10 @@ MonoBehaviour:
   CoordinatePieces: []
   DirToGo: {x: 0, y: 0}
   CurrentPos: {x: 0, y: 0}
+  CurrentRot: {x: 0, y: 0, z: 0}
   yOffset: -1
   xOffset: 4
+  zOffset: 0
   CurrentlyControlling: 0
   OnExistingBlock: 0
   allowedTimeOnBlock: 1

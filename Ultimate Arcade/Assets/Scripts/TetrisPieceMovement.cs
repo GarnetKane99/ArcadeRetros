@@ -94,12 +94,13 @@ public class TetrisPieceMovement : MonoBehaviour
                 };
                 break;
             case "Tetris_I":
-                TetrisGrid = new int[4, 4]
+                TetrisGrid = new int[5, 5]
                 {
-                    {0,0,1,0 },
-                    {0,0,1,0 },
-                    {0,0,1,0 },
-                    {0,0,1,0 }
+                    {0,0,0,0, 0},
+                    {0,0,1,0, 0},
+                    {0,0,1,0, 0},
+                    {0,0,1,0, 0},
+                    {0,0,1,0, 0 }
                 };
                 break;
             case "Tetris_O":
@@ -602,9 +603,9 @@ public class TetrisPieceMovement : MonoBehaviour
         Vector2[,] offsetFound = new Vector2[,]
         {
             {new Vector2(0,0),new Vector2(1,0), new Vector2(-2,0), new Vector2(1,-2), new Vector2(-2,1) },
-            {new Vector2(0,1), new Vector2(-2,0), new Vector2(1,0), new Vector2(-2,-1), new Vector2(1,2) },
+            {new Vector2(0,0), new Vector2(-2,0), new Vector2(1,0), new Vector2(-2,-1), new Vector2(1,2) },
             {new Vector2(0,0), new Vector2(-1,0), new Vector2(2,0), new Vector2(-1,2), new Vector2(2,-1)},
-            {new Vector2(0,-1), new Vector2(2,0), new Vector2(-1,0), new Vector2(2,1), new Vector2(-1,-2) }
+            {new Vector2(0,0), new Vector2(2,0), new Vector2(-1,0), new Vector2(2,1), new Vector2(-1,-2) }
         };
 
         int tempXOffset = (int)offsetFound[zOffset, TestNum].x;
@@ -612,20 +613,6 @@ public class TetrisPieceMovement : MonoBehaviour
 
         int[,] tempVal = TetrisGrid;
         int matSize = tempVal.GetLength(0);
-
-        //used to show block type
-        StringBuilder sb = new StringBuilder();
-        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
-            {
-                sb.Append(TetrisGrid[x, y]);
-                sb.Append(' ');
-            }
-            sb.AppendLine();
-        }
-
-        //Debug.Log(sb.ToString());
 
         //positive 90 algorithm
         for (int x = 0; x < matSize / 2; x++)
@@ -667,8 +654,8 @@ public class TetrisPieceMovement : MonoBehaviour
                 }
             }
         }
-
         CurrentRot.z -= 90;
+
         CurrentPos.x += tempXOffset;
         xOffset += tempXOffset;
         CurrentPos.y += tempYOffset;
@@ -717,7 +704,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 if (tempVal[x, y] == 1)
                 {
                     //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
-                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y - 1] == 3)
+                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y] == 3)
                     {
                         //positive 90 algorithm
                         for (int x1 = 0; x1 < matSize / 2; x1++)
