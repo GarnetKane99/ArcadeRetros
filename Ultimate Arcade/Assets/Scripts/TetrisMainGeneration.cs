@@ -25,11 +25,11 @@ public class TetrisMainGeneration : MonoBehaviour
 
     public void GenerateFirstBlock()
     {
-        //int RandomBlock = Random.Range(0, 7);
-        int RandomBlock = 0;
+        int RandomBlock = Random.Range(0, 7);
+        //int RandomBlock = 0;
         GameObject CurPiece = Instantiate(POSSIBLE_PIECES[RandomBlock], SPAWN_POS);
-        //RandomNextBlock = Random.Range(0, 7);
-        RandomNextBlock = 0;
+        RandomNextBlock = Random.Range(0, 7);
+        //RandomNextBlock = 0;
         GameObject NextPiece = Instantiate(POSSIBLE_NEXTPIECES[RandomNextBlock], NEXT_PIECE);
         NextBlock = NextPiece;
         CurPiece.transform.parent = null;
@@ -39,8 +39,8 @@ public class TetrisMainGeneration : MonoBehaviour
     {
         Destroy(NextBlock);
         GameObject CurPiece = Instantiate(POSSIBLE_PIECES[RandomNextBlock], SPAWN_POS);
-        //RandomNextBlock = Random.Range(0, 7);
-        RandomNextBlock = 0;
+        RandomNextBlock = Random.Range(0, 7);
+        //RandomNextBlock = 0;
         GameObject NextPiece = Instantiate(POSSIBLE_NEXTPIECES[RandomNextBlock], NEXT_PIECE);
         NextBlock = NextPiece;
         CurPiece.transform.parent = null;

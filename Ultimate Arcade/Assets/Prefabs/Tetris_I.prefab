@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3454972167554718961}
   - component: {fileID: 3454972167554718960}
   - component: {fileID: 1759594127678085760}
+  - component: {fileID: 1269438024434326810}
   m_Layer: 0
   m_Name: Tetris_Aqua
   m_TagString: Untagged
@@ -109,6 +110,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1269438024434326810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3454972167554718962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yDefaultOffset: 0
 --- !u!1 &3454972167719067703
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,6 +134,7 @@ GameObject:
   - component: {fileID: 3454972167719067702}
   - component: {fileID: 3454972167719067701}
   - component: {fileID: 1549993695299830418}
+  - component: {fileID: 6527469427608031106}
   m_Layer: 0
   m_Name: Tetris_Aqua (3)
   m_TagString: Untagged
@@ -218,6 +233,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6527469427608031106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3454972167719067703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yDefaultOffset: 0
 --- !u!1 &3454972167978782479
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +257,7 @@ GameObject:
   - component: {fileID: 3454972167978782478}
   - component: {fileID: 3454972167978782477}
   - component: {fileID: 5703166852070647258}
+  - component: {fileID: 527982959083748592}
   m_Layer: 0
   m_Name: Tetris_Aqua (1)
   m_TagString: Untagged
@@ -327,6 +356,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &527982959083748592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3454972167978782479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yDefaultOffset: 0
 --- !u!1 &3454972168598115954
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +445,11 @@ MonoBehaviour:
   yOffset: -1
   xOffset: 4
   zOffset: 0
+  ChildrenPieces:
+  - {fileID: 3454972167554718962}
+  - {fileID: 3454972167978782479}
+  - {fileID: 3454972168866349898}
+  - {fileID: 3454972167719067703}
   CurrentlyControlling: 0
   OnExistingBlock: 0
   allowedTimeOnBlock: 1
@@ -417,6 +464,7 @@ GameObject:
   - component: {fileID: 3454972168866349897}
   - component: {fileID: 3454972168866349896}
   - component: {fileID: 5364348184003195924}
+  - component: {fileID: 5611429194894485875}
   m_Layer: 0
   m_Name: Tetris_Aqua (2)
   m_TagString: Untagged
@@ -515,3 +563,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5611429194894485875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3454972168866349898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yDefaultOffset: 0
