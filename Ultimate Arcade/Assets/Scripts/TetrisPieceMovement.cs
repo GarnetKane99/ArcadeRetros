@@ -29,6 +29,11 @@ public class TetrisPieceMovement : MonoBehaviour
         CurrentlyControlling = true;
         CurrentPos = transform.position;
         CurrentRot = transform.rotation.eulerAngles;
+
+        if(FoundPiece() == "Tetris_I")
+        {
+            xOffset -= 1;
+        }
     }
 
     // Start is called before the first frame update
@@ -96,11 +101,11 @@ public class TetrisPieceMovement : MonoBehaviour
             case "Tetris_I":
                 TetrisGrid = new int[5, 5]
                 {
-                    {0,0,0,0, 0},
-                    {0,0,1,0, 0},
-                    {0,0,1,0, 0},
-                    {0,0,1,0, 0},
-                    {0,0,1,0, 0 }
+                    {0,0,0,0,0 },
+                    {0,0,1,0,0 },
+                    {0,0,1,0,0 },
+                    {0,0,1,0,0 },
+                    {0,0,1,0,0 }
                 };
                 break;
             case "Tetris_O":
@@ -600,6 +605,23 @@ public class TetrisPieceMovement : MonoBehaviour
 
     bool TestIPositiveRotation(int TestNum)
     {
+/*        switch (zOffset)
+        {
+            case 0:
+            case 2:
+                xOffset -= 1;
+                break;
+            case 1:
+            case 3:
+                xOffset += 1;
+                break;
+        }*/
+
+/*        if(zOffset == 0)
+        {
+            xOffset -= 1;
+        }*/
+
         Vector2[,] offsetFound = new Vector2[,]
         {
             {new Vector2(0,0),new Vector2(1,0), new Vector2(-2,0), new Vector2(1,-2), new Vector2(-2,1) },
@@ -634,10 +656,27 @@ public class TetrisPieceMovement : MonoBehaviour
             {
                 if (tempVal[x, y] == 1)
                 {
-                    //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
-                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y - 1] == 3)
+                    if (transform.position.x >= -3 && transform.position.x <= 3)
                     {
-                        //negative 90 algorithm
+                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 2 || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 3)
+                        {
+                            //negative 90 algorithm
+                            for (int x1 = 0; x1 < matSize / 2; x1++)
+                            {
+                                for (int y1 = x1; y1 < matSize - x1 - 1; y1++)
+                                {
+                                    int temp = tempVal[x1, y1];
+                                    tempVal[x1, y1] = tempVal[y1, matSize - 1 - x1];
+                                    tempVal[y1, matSize - 1 - x1] = tempVal[matSize - 1 - x1, matSize - 1 - y1];
+                                    tempVal[matSize - 1 - x1, matSize - 1 - y1] = tempVal[matSize - 1 - y1, x1];
+                                    tempVal[matSize - 1 - y1, x1] = temp;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                    else if(transform.position.x == 4 || transform.position.x == -4)
+                    {
                         for (int x1 = 0; x1 < matSize / 2; x1++)
                         {
                             for (int y1 = x1; y1 < matSize - x1 - 1; y1++)
@@ -672,9 +711,9 @@ public class TetrisPieceMovement : MonoBehaviour
         Vector2[,] offsetFound = new Vector2[,]
         {
             {new Vector2(0,0),new Vector2(2,0), new Vector2(-1,0), new Vector2(2,1), new Vector2(-1,-2) },
-            {new Vector2(0,0), new Vector2(1,0), new Vector2(-2,0), new Vector2(1,-2), new Vector2(-2,1) },
-            {new Vector2(0,0), new Vector2(-2,0), new Vector2(1,0), new Vector2(-2,-1), new Vector2(1,2)},
-            {new Vector2(0,0), new Vector2(-1, 0), new Vector2(2,0), new Vector2(-1,2), new Vector2(2,-1) }
+            {new Vector2(-1,0), new Vector2(1,0), new Vector2(-2,0), new Vector2(1,-2), new Vector2(-2,1) },
+            {new Vector2(-1,1), new Vector2(-2,0), new Vector2(1,0), new Vector2(-2,-1), new Vector2(1,2)},
+            {new Vector2(0,1), new Vector2(-1, 0), new Vector2(2,0), new Vector2(-1,2), new Vector2(2,-1) }
         };
 
         int tempXOffset = (int)offsetFound[zOffset, TestNum].x;
@@ -695,7 +734,6 @@ public class TetrisPieceMovement : MonoBehaviour
                 tempVal[matSize - 1 - y, x] = temp;
             }
         }
-
         //check if updated grid is able to rotate
         for (int y = tempVal.GetLength(1) - 1; y >= 0; y--)
         {
@@ -703,10 +741,26 @@ public class TetrisPieceMovement : MonoBehaviour
             {
                 if (tempVal[x, y] == 1)
                 {
-                    //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
-                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y] == 3)
+                    if (transform.position.x >= -3 && transform.position.x <= 3)
                     {
-                        //positive 90 algorithm
+                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 2 || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 3)
+                        {
+                            for (int x1 = 0; x1 < matSize / 2; x1++)
+                            {
+                                for (int y1 = x1; y1 < matSize - x1 - 1; y1++)
+                                {
+                                    int temp = tempVal[x1, y1];
+                                    tempVal[x1, y1] = tempVal[matSize - 1 - y1, x1];
+                                    tempVal[matSize - 1 - y1, x1] = tempVal[matSize - 1 - x1, matSize - 1 - y1];
+                                    tempVal[matSize - 1 - x1, matSize - 1 - y1] = tempVal[y1, matSize - 1 - x1];
+                                    tempVal[y1, matSize - 1 - x1] = temp;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                    else if (transform.position.x == 4 || transform.position.x == -4)
+                    {
                         for (int x1 = 0; x1 < matSize / 2; x1++)
                         {
                             for (int y1 = x1; y1 < matSize - x1 - 1; y1++)

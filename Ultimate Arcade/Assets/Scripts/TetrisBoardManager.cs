@@ -57,7 +57,7 @@ public class TetrisBoardManager : MonoBehaviour
         {
             for (int x = 0; x < GridSize.GetLength(0); x++)
             {
-                if(y == GridSize.GetLength(1) - 1)
+                if (y == GridSize.GetLength(1) - 1)
                 {
                     GridSize[x, y] = 0;
                 }
@@ -66,7 +66,6 @@ public class TetrisBoardManager : MonoBehaviour
             }
             sb.AppendLine();
         }
-
         Debug.Log(sb.ToString());
     }
 }
