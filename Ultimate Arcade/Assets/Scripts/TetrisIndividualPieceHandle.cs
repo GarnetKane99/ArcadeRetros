@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class TetrisIndividualPieceHandle : MonoBehaviour
 {
-    public int yDefaultOffset = 0;
     public bool UpdatePos = false;
-    [SerializeField] private bool foundX = false;
-    [SerializeField] private int xFound = 0;
     public Vector2 Pos;
 
     // Start is called before the first frame update

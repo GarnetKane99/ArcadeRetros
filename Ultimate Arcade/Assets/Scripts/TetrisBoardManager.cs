@@ -71,7 +71,7 @@ public class TetrisBoardManager : MonoBehaviour
             }
             sb.AppendLine();
         }
-        Debug.Log(sb.ToString());
+        //Debug.Log(sb.ToString());
     }
 
     public void UpdateBlocks()

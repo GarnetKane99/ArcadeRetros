@@ -61,7 +61,6 @@ public class GhostPiece : MonoBehaviour
 
     void BlockDescentFast()
     {
-        Debug.Log("Descending");
         for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
         {
             for (int x = 0; x < TetrisGrid.GetLength(0); x++)
