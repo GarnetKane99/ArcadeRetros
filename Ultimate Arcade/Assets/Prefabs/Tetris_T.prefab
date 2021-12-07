@@ -59,9 +59,9 @@ MonoBehaviour:
   allowedTimeOnBlock: 1
   decreaseSpeed: 1
   ScoreHandler: {fileID: 0}
-  AlternatePiece: {fileID: 8937014983834199252, guid: d3679f96bddce8447aedea12dfc9fcc1, type: 3}
-  SpawnedPiece: {fileID: 0}
   GhostPiece: 0
+  GhostyBoyToSpawn: {fileID: 8937014983834199252, guid: d3679f96bddce8447aedea12dfc9fcc1, type: 3}
+  GhostBoy: {fileID: 0}
 --- !u!1 &1050795828175504446
 GameObject:
   m_ObjectHideFlags: 0

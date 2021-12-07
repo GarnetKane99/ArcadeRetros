@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class GhostPiece : MonoBehaviour
@@ -10,16 +11,15 @@ public class GhostPiece : MonoBehaviour
     public Vector2 CurrentPos;
     public Vector3 CurrentRot;
 
-    private TetrisBoardManager GridManager;
+    [SerializeField] private TetrisBoardManager GridManager;
     public int yOffset = -1;
     public int xOffset = 4;
-    int[,] TetrisGrid;
-    int[,] CurrentPosition;
+    public int[,] TetrisGrid;
+    public int[,] CurrentPosition;
     //zOffset is used to calculate which rotation the block will be moving into
     public int zOffset = 0;
 
     private bool StopDescent = false;
-
 
     private void Awake()
     {
@@ -61,6 +61,7 @@ public class GhostPiece : MonoBehaviour
 
     void BlockDescentFast()
     {
+        Debug.Log("Descending");
         for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
         {
             for (int x = 0; x < TetrisGrid.GetLength(0); x++)
@@ -113,5 +114,18 @@ public class GhostPiece : MonoBehaviour
     void Update()
     {
         BlockDescentFast();
+
+        StringBuilder sb = new StringBuilder();
+        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+            {
+                sb.Append(TetrisGrid[x, y]);
+                sb.Append(' ');
+            }
+            sb.AppendLine();
+        }
+
+        //Debug.Log(sb.ToString());
     }
 }

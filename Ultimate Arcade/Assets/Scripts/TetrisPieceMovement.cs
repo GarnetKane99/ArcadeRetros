@@ -32,6 +32,9 @@ public class TetrisPieceMovement : MonoBehaviour
 
     public bool GhostPiece = false;
 
+    [SerializeField] private GameObject GhostyBoyToSpawn;
+    [SerializeField] private GameObject GhostBoy;
+
     private void Awake()
     {
         CurrentlyControlling = true;
@@ -65,6 +68,12 @@ public class TetrisPieceMovement : MonoBehaviour
         {
             InvokeRepeating("BlockDescent", 1.0f, decreaseSpeed);
         }
+
+        GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
+        GhostBoy = Spawned;
+        GhostBoy.GetComponent<GhostPiece>().yOffset = yOffset;
+        GhostBoy.GetComponent<GhostPiece>().TetrisGrid = TetrisGrid;
+        GhostBoy.GetComponent<GhostPiece>().CurrentPosition = CurrentPosition;
     }
 
     void GetScoreForSpeed()
@@ -259,6 +268,7 @@ public class TetrisPieceMovement : MonoBehaviour
         GridManager.FindFinishedRow();
         CurrentlyControlling = false;
         PieceGenerator.GenerateBlock();
+        Destroy(GhostBoy);
         Destroy(gameObject);
     }
 
@@ -367,7 +377,7 @@ public class TetrisPieceMovement : MonoBehaviour
             sb.AppendLine();
         }
 
-        Debug.Log(sb.ToString());
+//        Debug.Log(sb.ToString());
     }
 
     void GetInput()
@@ -425,6 +435,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 }
                 xOffset += 1;
                 CurrentPos.x += 1;
+                Destroy(GhostBoy);
             }
             else if (DirToGo.x < 0)
             {
@@ -443,9 +454,18 @@ public class TetrisPieceMovement : MonoBehaviour
                 }
                 xOffset -= 1;
                 CurrentPos.x -= 1;
+                Destroy(GhostBoy);
             }
             UpdateCoordinates();
             gameObject.transform.position = CurrentPos;
+            GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
+            GhostBoy = Spawned;
+            GhostBoy.GetComponent<GhostPiece>().yOffset = yOffset;
+            GhostBoy.GetComponent<GhostPiece>().xOffset = xOffset;
+            GhostBoy.GetComponent<GhostPiece>().TetrisGrid = TetrisGrid;
+            GhostBoy.GetComponent<GhostPiece>().CurrentPosition = CurrentPosition;
+            GhostBoy.GetComponent<GhostPiece>().CurrentRot = CurrentRot;
+            GhostBoy.transform.rotation = Quaternion.Euler(GhostBoy.GetComponent<GhostPiece>().CurrentRot);
         }
     }
 
@@ -511,6 +531,15 @@ public class TetrisPieceMovement : MonoBehaviour
                     {
                         if (TestPositiveRotation(i))
                         {
+                            Destroy(GhostBoy);
+                            GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
+                            GhostBoy = Spawned;
+                            GhostBoy.GetComponent<GhostPiece>().yOffset = yOffset;
+                            GhostBoy.GetComponent<GhostPiece>().xOffset = xOffset;
+                            GhostBoy.GetComponent<GhostPiece>().TetrisGrid = TetrisGrid;
+                            GhostBoy.GetComponent<GhostPiece>().CurrentPosition = CurrentPosition;
+                            GhostBoy.GetComponent<GhostPiece>().CurrentRot = CurrentRot;
+                            GhostBoy.transform.rotation = Quaternion.Euler(GhostBoy.GetComponent<GhostPiece>().CurrentRot);
                             return;
                         }
                     }
@@ -540,6 +569,15 @@ public class TetrisPieceMovement : MonoBehaviour
                     {
                         if (TestNegativeRotation(i))
                         {
+                            Destroy(GhostBoy);
+                            GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
+                            GhostBoy = Spawned;
+                            GhostBoy.GetComponent<GhostPiece>().yOffset = yOffset;
+                            GhostBoy.GetComponent<GhostPiece>().xOffset = xOffset;
+                            GhostBoy.GetComponent<GhostPiece>().TetrisGrid = TetrisGrid;
+                            GhostBoy.GetComponent<GhostPiece>().CurrentPosition = CurrentPosition; 
+                            GhostBoy.GetComponent<GhostPiece>().CurrentRot = CurrentRot;
+                            GhostBoy.transform.rotation = Quaternion.Euler(GhostBoy.GetComponent<GhostPiece>().CurrentRot);
                             return;
                         }
                     }
@@ -572,6 +610,15 @@ public class TetrisPieceMovement : MonoBehaviour
                     {
                         if (TestIPositiveRotation(i))
                         {
+                            Destroy(GhostBoy.gameObject);
+                            GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
+                            GhostBoy = Spawned;
+                            GhostBoy.GetComponent<GhostPiece>().yOffset = yOffset;
+                            GhostBoy.GetComponent<GhostPiece>().xOffset = xOffset;
+                            GhostBoy.GetComponent<GhostPiece>().TetrisGrid = TetrisGrid;
+                            GhostBoy.GetComponent<GhostPiece>().CurrentPosition = CurrentPosition; 
+                            GhostBoy.GetComponent<GhostPiece>().CurrentRot = CurrentRot;
+                            GhostBoy.transform.rotation = Quaternion.Euler(GhostBoy.GetComponent<GhostPiece>().CurrentRot);
                             return;
                         }
                     }
@@ -601,6 +648,15 @@ public class TetrisPieceMovement : MonoBehaviour
                     {
                         if (TestINegativeRotation(i))
                         {
+                            Destroy(GhostBoy.gameObject);
+                            GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
+                            GhostBoy = Spawned;
+                            GhostBoy.GetComponent<GhostPiece>().yOffset = yOffset;
+                            GhostBoy.GetComponent<GhostPiece>().xOffset = xOffset;
+                            GhostBoy.GetComponent<GhostPiece>().TetrisGrid = TetrisGrid;
+                            GhostBoy.GetComponent<GhostPiece>().CurrentPosition = CurrentPosition; 
+                            GhostBoy.GetComponent<GhostPiece>().CurrentRot = CurrentRot;
+                            GhostBoy.transform.rotation = Quaternion.Euler(GhostBoy.GetComponent<GhostPiece>().CurrentRot);
                             return;
                         }
                     }
