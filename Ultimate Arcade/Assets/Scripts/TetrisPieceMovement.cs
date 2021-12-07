@@ -5,7 +5,7 @@ using UnityEngine;
 //This class handles the movement and rotation of the Tetrominoes
 public class TetrisPieceMovement : MonoBehaviour
 {
-    //These coordinate pieces will be linked with the grids 
+    //These coordinate pieces will be linked with the grids
     public GameObject[] CoordinatePieces;
     public Vector2 DirToGo;
     public Vector2 CurrentPos;
@@ -13,14 +13,13 @@ public class TetrisPieceMovement : MonoBehaviour
 
     private TetrisBoardManager GridManager;
     private TetrisMainGeneration PieceGenerator;
-    public int yOffset = -1;//, xOffset = -10;
+    public int yOffset = -1;
     public int xOffset = 4;
     int[,] TetrisGrid;
     int[,] CurrentPosition;
     //zOffset is used to calculate which rotation the block will be moving into
     public int zOffset = 0;
 
-    [SerializeField] private List<GameObject> ChildrenPieces;
     [SerializeField] private bool CurrentlyControlling = false;
     [SerializeField] private bool OnExistingBlock = false;
     [SerializeField] private float allowedTimeOnBlock = 1.0f; //variable will be updated/initialized as game progressess
@@ -31,13 +30,15 @@ public class TetrisPieceMovement : MonoBehaviour
     private bool SpacePressed = false;
     private bool StopDescent = false;
 
+    public bool GhostPiece = false;
+
     private void Awake()
     {
         CurrentlyControlling = true;
         CurrentPos = transform.position;
         CurrentRot = transform.rotation.eulerAngles;
 
-        if(FoundPiece() == "Tetris_I")
+        if (FoundPiece() == "Tetris_I")
         {
             xOffset -= 1;
         }
@@ -50,7 +51,7 @@ public class TetrisPieceMovement : MonoBehaviour
         GridManager = FindObjectOfType<TetrisBoardManager>();
         PieceGenerator = FindObjectOfType<TetrisMainGeneration>();
         ScoreHandler = FindObjectOfType<TetrisScoreHandler>();
-        
+
         if (GridManager != null)
         {
             InitializeBlockSpawnPos();
@@ -68,7 +69,7 @@ public class TetrisPieceMovement : MonoBehaviour
 
     void GetScoreForSpeed()
     {
-        for(int i = 0; i < ScoreHandler.GetLevel(); i++)
+        for (int i = 0; i < ScoreHandler.GetLevel(); i++)
         {
             decreaseSpeed -= 0.05f;
         }
@@ -162,7 +163,7 @@ public class TetrisPieceMovement : MonoBehaviour
                         CancelInvoke("BlockDescent");
                         return;
                     }
-                    else if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 3)
+                    else if (OnPlacedBlock(x, y))
                     {
                         OnExistingBlock = true;
                         return;
@@ -202,6 +203,22 @@ public class TetrisPieceMovement : MonoBehaviour
         gameObject.transform.position = CurrentPos;
     }
 
+    bool OnPlacedBlock(int x, int y)
+    {
+        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 3
+        || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 4
+        || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 5
+        || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 6
+        || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 7
+        || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 8
+        || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 9)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void LastSecondChanges()
     {
         for (int x = 0; x < CurrentPosition.GetLength(1); x++)
@@ -210,46 +227,35 @@ public class TetrisPieceMovement : MonoBehaviour
             {
                 if (CurrentPosition[y, x] == 1)
                 {
-                    GridManager.GridSize[y, x] = 3;
+                    switch (FoundPiece())
+                    {
+                        case "Tetris_I":
+                            GridManager.GridSize[y, x] = 3;
+                            break;
+                        case "Tetris_O":
+                            GridManager.GridSize[y, x] = 4;
+                            break;
+                        case "Tetris_L":
+                            GridManager.GridSize[y, x] = 5;
+                            break;
+                        case "Tetris_J":
+                            GridManager.GridSize[y, x] = 6;
+                            break;
+                        case "Tetris_Z":
+                            GridManager.GridSize[y, x] = 7;
+                            break;
+                        case "Tetris_S":
+                            GridManager.GridSize[y, x] = 8;
+                            break;
+                        case "Tetris_T":
+                            GridManager.GridSize[y, x] = 9;
+                            break;
+                    }
                 }
             }
         }
 
-        UpdateChildPieces();
-        GridManager.FindFinishedRow();
-        CurrentlyControlling = false;
-        PieceGenerator.GenerateBlock();
-        Destroy(gameObject);
-    }
-
-    void UpdateChildPieces()
-    {
-        foreach(GameObject Child in ChildrenPieces)
-        {
-            Child.GetComponent<TetrisIndividualPieceHandle>().GetXPos();
-            Child.GetComponent<TetrisIndividualPieceHandle>().GetYPos();
-
-            Child.GetComponent<TetrisIndividualPieceHandle>().UpdatePos = true;
-
-            GridManager.Children.Add(Child);
-            Child.transform.parent = null;
-        }
-    }
-
-    void FinishChanges()
-    {
-        for (int x = 0; x < CurrentPosition.GetLength(1); x++)
-        {
-            for (int y = 0; y < CurrentPosition.GetLength(0); y++)
-            {
-                if (CurrentPosition[y, x] == 1)
-                {
-                    GridManager.GridSize[y, x] = 3;
-                }
-            }
-        }
-
-        UpdateChildPieces();
+        GridManager.UpdateBlocks();
         GridManager.FindFinishedRow();
         CurrentlyControlling = false;
         PieceGenerator.GenerateBlock();
@@ -267,13 +273,13 @@ public class TetrisPieceMovement : MonoBehaviour
                     if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
                     {
                         StopDescent = true;
-                        FinishChanges();
+                        LastSecondChanges();
                         return;
                     }
-                    else if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 3)
+                    else if (OnPlacedBlock(x, y))
                     {
                         StopDescent = true;
-                        FinishChanges();
+                        LastSecondChanges();
                         return;
                     }
                 }
@@ -410,7 +416,7 @@ public class TetrisPieceMovement : MonoBehaviour
                     {
                         if (TetrisGrid[x, y] == 1)
                         {
-                            if (GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2 || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3)
+                            if (GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2 || OnPlacedBlockPos(x, y))
                             {
                                 return;
                             }
@@ -428,7 +434,7 @@ public class TetrisPieceMovement : MonoBehaviour
                     {
                         if (TetrisGrid[x, y] == 1)
                         {
-                            if (GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2 || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3)
+                            if (GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 2 || OnPlacedBlockNeg(x, y))
                             {
                                 return;
                             }
@@ -441,6 +447,38 @@ public class TetrisPieceMovement : MonoBehaviour
             UpdateCoordinates();
             gameObject.transform.position = CurrentPos;
         }
+    }
+
+    bool OnPlacedBlockPos(int x, int y)
+    {
+        if (GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3
+        || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 4
+        || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 5
+        || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 6
+        || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 7
+        || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 8
+        || GridManager.GridSize[x + xOffset + 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 9)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool OnPlacedBlockNeg(int x, int y)
+    {
+        if (GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 3
+        || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 4
+        || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 5
+        || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 6
+        || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 7
+        || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 8
+        || GridManager.GridSize[x + xOffset - 1, GridManager.GridSize.GetLength(1) + yOffset + y - 1] == 9)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void UpdateBlockRot()
@@ -609,7 +647,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 if (tempVal[x, y] == 1)
                 {
                     //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
-                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y - 1] == 3)
+                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || OnPlacedBlock(x, y))
                     {
                         //negative 90 algorithm
                         for (int x1 = 0; x1 < matSize / 2; x1++)
@@ -678,7 +716,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 if (tempVal[x, y] == 1)
                 {
                     //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
-                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + tempYOffset + y - 1] == 3)
+                    if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || OnPlacedBlock(x, y))
                     {
                         //positive 90 algorithm
                         for (int x1 = 0; x1 < matSize / 2; x1++)
@@ -712,22 +750,22 @@ public class TetrisPieceMovement : MonoBehaviour
 
     bool TestIPositiveRotation(int TestNum)
     {
-/*        switch (zOffset)
-        {
-            case 0:
-            case 2:
-                xOffset -= 1;
-                break;
-            case 1:
-            case 3:
-                xOffset += 1;
-                break;
-        }*/
+        /*        switch (zOffset)
+                {
+                    case 0:
+                    case 2:
+                        xOffset -= 1;
+                        break;
+                    case 1:
+                    case 3:
+                        xOffset += 1;
+                        break;
+                }*/
 
-/*        if(zOffset == 0)
-        {
-            xOffset -= 1;
-        }*/
+        /*        if(zOffset == 0)
+                {
+                    xOffset -= 1;
+                }*/
 
         Vector2[,] offsetFound = new Vector2[,]
         {
@@ -765,7 +803,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 {
                     if (transform.position.x >= -3 && transform.position.x <= 3)
                     {
-                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 2 || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 3)
+                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 2 || OnPlacedBlock(x, y))
                         {
                             //negative 90 algorithm
                             for (int x1 = 0; x1 < matSize / 2; x1++)
@@ -782,7 +820,7 @@ public class TetrisPieceMovement : MonoBehaviour
                             return false;
                         }
                     }
-                    else if(transform.position.x == 4 || transform.position.x == -4)
+                    else if (transform.position.x == 4 || transform.position.x == -4)
                     {
                         for (int x1 = 0; x1 < matSize / 2; x1++)
                         {
@@ -850,7 +888,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 {
                     if (transform.position.x >= -3 && transform.position.x <= 3)
                     {
-                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 2 || GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 3)
+                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + y + yOffset - tempYOffset] == 2 || OnPlacedBlock(x, y))
                         {
                             for (int x1 = 0; x1 < matSize / 2; x1++)
                             {

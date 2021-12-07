@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1558881700387426948}
   - component: {fileID: 1558881700387426949}
-  - component: {fileID: 7550620394954144157}
   - component: {fileID: 7605228227935895305}
   m_Layer: 0
   m_Name: Tetris_Purple (2)
@@ -84,32 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7550620394954144157
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558881700387426955}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &7605228227935895305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yDefaultOffset: 0
   UpdatePos: 0
+  foundX: 0
+  xFound: 0
   Pos: {x: 0, y: 0}
 --- !u!1 &1558881700738009627
 GameObject:
@@ -135,7 +110,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1558881700738009620}
   - component: {fileID: 1558881700738009621}
-  - component: {fileID: 5878328094987905588}
   - component: {fileID: 4829727837068392404}
   m_Layer: 0
   m_Name: Tetris_Purple (1)
@@ -209,32 +183,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &5878328094987905588
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558881700738009627}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &4829727837068392404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yDefaultOffset: 0
   UpdatePos: 0
+  foundX: 0
+  xFound: 0
   Pos: {x: 0, y: 0}
 --- !u!1 &1558881701082945214
 GameObject:
@@ -260,7 +210,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1558881701082945215}
   - component: {fileID: 1558881701082945208}
-  - component: {fileID: 8811313222696301958}
   - component: {fileID: 507723091921499156}
   m_Layer: 0
   m_Name: Tetris_Purple (3)
@@ -334,32 +283,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8811313222696301958
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558881701082945214}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &507723091921499156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +297,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yDefaultOffset: 0
   UpdatePos: 0
+  foundX: 0
+  xFound: 0
   Pos: {x: 0, y: 0}
 --- !u!1 &1558881701572767911
 GameObject:
@@ -385,7 +310,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1558881701572767904}
   - component: {fileID: 1558881701572767905}
-  - component: {fileID: 8389442174598602890}
   - component: {fileID: 8375846896044697432}
   m_Layer: 0
   m_Name: Tetris_Purple
@@ -459,32 +383,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8389442174598602890
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558881701572767911}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &8375846896044697432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +397,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yDefaultOffset: 0
   UpdatePos: 0
+  foundX: 0
+  xFound: 0
   Pos: {x: 0, y: 0}
 --- !u!1 &1558881701751438831
 GameObject:
@@ -554,11 +454,11 @@ MonoBehaviour:
   yOffset: -1
   xOffset: 4
   zOffset: 0
-  ChildrenPieces:
-  - {fileID: 1558881701572767911}
-  - {fileID: 1558881700738009627}
-  - {fileID: 1558881700387426955}
-  - {fileID: 1558881701082945214}
   CurrentlyControlling: 0
   OnExistingBlock: 0
   allowedTimeOnBlock: 1
+  decreaseSpeed: 1
+  ScoreHandler: {fileID: 0}
+  AlternatePiece: {fileID: 6536792953314312727, guid: 8900e2ccd30ea72419ab24789b8dc33a, type: 3}
+  SpawnedPiece: {fileID: 0}
+  GhostPiece: 0

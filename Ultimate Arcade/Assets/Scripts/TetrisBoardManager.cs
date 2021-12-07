@@ -11,6 +11,7 @@ public class TetrisBoardManager : MonoBehaviour
     public List<GameObject> Children;
 
     [SerializeField] private TetrisScoreHandler Score;
+    [SerializeField] private List<GameObject> Pieces;
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +71,57 @@ public class TetrisBoardManager : MonoBehaviour
             }
             sb.AppendLine();
         }
-        Debug.Log(sb.ToString());
+        //Debug.Log(sb.ToString());
+    }
+
+    public void UpdateBlocks()
+    {
+        for (int y = GridSize.GetLength(1)-1; y >= 0; y--)
+        {
+            for(int x = 0; x < GridSize.GetLength(0); x++)
+            {
+                switch (GridSize[x, y])
+                {
+                    case 3:
+                        GameObject TetrisI = Instantiate(Pieces[0], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisI.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisI);
+                        break;
+                    case 4:
+                        GameObject TetrisO = Instantiate(Pieces[1], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisO.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisO);
+                        break;
+                    case 5:
+                        GameObject TetrisL = Instantiate(Pieces[2], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisL.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisL);
+                        break;
+                    case 6:
+                        GameObject TetrisJ = Instantiate(Pieces[3], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisJ.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisJ);
+                        break;
+                    case 7:
+                        GameObject TetrisZ = Instantiate(Pieces[4], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisZ.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisZ);
+                        break;
+                    case 8:
+                        GameObject TetrisS = Instantiate(Pieces[5], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisS.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisS);
+                        break;
+                    case 9:
+                        GameObject TetrisT = Instantiate(Pieces[6], new Vector2(x - 5, y - 9), Quaternion.identity);
+                        TetrisT.GetComponent<TetrisIndividualPieceHandle>().Pos = new Vector2(x - 5, y - 9);
+                        Children.Add(TetrisT);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     public void FindFinishedRow()
@@ -82,7 +133,7 @@ public class TetrisBoardManager : MonoBehaviour
             {
                 if(y != 0 && y != GridSize.GetLength(1) - 1)
                 {
-                    if(GridSize[x,y] == 3)
+                    if(FoundRow(x,y))
                     {
                         Found++;
                     }
@@ -95,11 +146,23 @@ public class TetrisBoardManager : MonoBehaviour
             }
         }
     }
-    // * IDEA *
-    // Have a list of game objects - give each letter a score from 3 to 10 -
-    // Can 'destroy' the letters and reinstatiate them in new positions purely according
-    // to the grid position rather than the actual vector position
-    // Use similar the DrawGrid part!!!!
+
+    bool FoundRow(int x, int y)
+    {
+        if(GridSize[x,y] == 3
+            || GridSize[x,y] == 4
+            || GridSize[x,y] == 5
+            || GridSize[x,y] == 6
+            || GridSize[x,y] == 7
+            || GridSize[x,y] == 8
+            || GridSize[x,y] == 9)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void DeleteRow(int RowFound)
     {
         Score.SetCurrentScore();
