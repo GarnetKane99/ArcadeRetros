@@ -158,7 +158,7 @@ public class TetrisBoardManager : MonoBehaviour
                 }
                 else if (y == GridSize.GetLength(1) - 1)
                 {
-                    if (FoundRow(x, y))
+                    if (FoundRow(x, y-1))
                     {
                         EndGame();
                         return;
