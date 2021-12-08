@@ -19,8 +19,6 @@ public class GhostPiece : MonoBehaviour
     //zOffset is used to calculate which rotation the block will be moving into
     public int zOffset = 0;
 
-    private bool StopDescent = false;
-
     private void Awake()
     {
         CurrentPos = transform.position;
@@ -69,12 +67,10 @@ public class GhostPiece : MonoBehaviour
                 {
                     if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
                     {
-                        StopDescent = true;
                         return;
                     }
                     else if (OnPlacedBlock(x, y))
                     {
-                        StopDescent = true;
                         return;
                     }
                 }

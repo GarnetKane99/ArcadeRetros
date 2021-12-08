@@ -9,15 +9,22 @@ public class TetrisBoardManager : MonoBehaviour
     public Sprite TileSprite;
     public GameObject BorderParent;
     public List<GameObject> Children;
+    private List<GameObject> BorderChild;
+    private List<GameObject> BorderInner;
 
+    [SerializeField] private GameObject GameOverScreen;
     [SerializeField] private TetrisScoreHandler Score;
     [SerializeField] private List<GameObject> Pieces;
+    [SerializeField] private TetrisMainGeneration MainGen;
 
     // Start is called before the first frame update
     void Start()
     {
+        BorderChild = new List<GameObject>();
+        BorderInner = new List<GameObject>();
         InitializeGrid();
         Children = new List<GameObject>();
+        MainGen = GetComponent<TetrisMainGeneration>();
     }
 
     void InitializeGrid()
@@ -49,6 +56,11 @@ public class TetrisBoardManager : MonoBehaviour
         if (val == 0)
         {
             Sprite.color = new Color(1, 1, 1, 25f / 255f);
+            BorderInner.Add(Tile);
+        }
+        else
+        {
+            BorderChild.Add(Tile);
         }
         Sprite.sprite = TileSprite;
         Tile.transform.parent = BorderParent.transform;
@@ -76,9 +88,14 @@ public class TetrisBoardManager : MonoBehaviour
 
     public void UpdateBlocks()
     {
-        for (int y = GridSize.GetLength(1)-1; y >= 0; y--)
+        foreach (GameObject Child in Children)
         {
-            for(int x = 0; x < GridSize.GetLength(0); x++)
+            Destroy(Child.gameObject);
+        }
+        Children.Clear();
+        for (int y = GridSize.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < GridSize.GetLength(0); x++)
             {
                 switch (GridSize[x, y])
                 {
@@ -126,36 +143,68 @@ public class TetrisBoardManager : MonoBehaviour
 
     public void FindFinishedRow()
     {
-        for(int y = GridSize.GetLength(1)-1; y >= 0; y--)
+        UpdateBlocks();
+        for (int y = GridSize.GetLength(1) - 1; y >= 0; y--)
         {
             int Found = 0;
-            for(int x = 0; x < GridSize.GetLength(0); x++)
+            for (int x = 0; x < GridSize.GetLength(0); x++)
             {
-                if(y != 0 && y != GridSize.GetLength(1) - 1)
+                if (y != 0 && y != GridSize.GetLength(1) - 1)
                 {
-                    if(FoundRow(x,y))
+                    if (FoundRow(x, y))
                     {
                         Found++;
                     }
                 }
+                else if (y == GridSize.GetLength(1) - 1)
+                {
+                    if (FoundRow(x, y))
+                    {
+                        EndGame();
+                        return;
+                    }
+                }
+
             }
 
-            if(Found == 9)
+            if (Found == 9)
             {
                 DeleteRow(y);
             }
         }
     }
 
+    void EndGame()
+    {
+        foreach (GameObject BorderChildren in BorderChild)
+        {
+            SpriteRenderer ColourFound = BorderChildren.GetComponent<SpriteRenderer>();
+            ColourFound.color = new Color(ColourFound.color.r, ColourFound.color.g, ColourFound.color.b, 100f / 255f);
+        }
+        foreach(GameObject BorderIn in BorderInner)
+        {
+            SpriteRenderer ColourFound = BorderIn.GetComponent<SpriteRenderer>();
+            ColourFound.color = new Color(ColourFound.color.r, ColourFound.color.g, ColourFound.color.b, ColourFound.color.a - 10f / 255f);
+        }
+        foreach (GameObject TileChildren in Children)
+        {
+            SpriteRenderer ColourFound = TileChildren.GetComponent<SpriteRenderer>();
+            ColourFound.color = new Color(ColourFound.color.r, ColourFound.color.g, ColourFound.color.b, 100f / 255f);
+        }
+
+        MainGen.enabled = false;
+        GameOverScreen.SetActive(true);
+    }
+
     bool FoundRow(int x, int y)
     {
-        if(GridSize[x,y] == 3
-            || GridSize[x,y] == 4
-            || GridSize[x,y] == 5
-            || GridSize[x,y] == 6
-            || GridSize[x,y] == 7
-            || GridSize[x,y] == 8
-            || GridSize[x,y] == 9)
+        if (GridSize[x, y] == 3
+            || GridSize[x, y] == 4
+            || GridSize[x, y] == 5
+            || GridSize[x, y] == 6
+            || GridSize[x, y] == 7
+            || GridSize[x, y] == 8
+            || GridSize[x, y] == 9)
         {
             return true;
         }
@@ -172,7 +221,7 @@ public class TetrisBoardManager : MonoBehaviour
 
         for (int y = 0; y < tempArray.GetLength(1); y++)
         {
-            for (int x = 1; x < tempArray.GetLength(0)-1; x++)
+            for (int x = 1; x < tempArray.GetLength(0) - 1; x++)
             {
                 if (y >= RowFound)
                 {
@@ -188,7 +237,6 @@ public class TetrisBoardManager : MonoBehaviour
         }
 
         DestroyChildren(RowFound);
-
         GridSize = tempArray;
     }
 
@@ -215,5 +263,6 @@ public class TetrisBoardManager : MonoBehaviour
                 TempList[i].GetComponent<TetrisIndividualPieceHandle>().GetYPos();
             }
         }
+        Children = TempList;
     }
 }
