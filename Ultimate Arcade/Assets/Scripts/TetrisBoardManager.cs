@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using TMPro;
 
 public class TetrisBoardManager : MonoBehaviour
 {
@@ -11,11 +12,17 @@ public class TetrisBoardManager : MonoBehaviour
     private List<GameObject> BorderChild;
     [SerializeField] private List<GameObject> BorderInner;
 
-    [SerializeField] private GameObject GameOverScreen;
+    public GameObject GameOverScreen;
     [SerializeField] private TetrisScoreHandler Score;
     [SerializeField] private GameObject DefaultTile;
     [SerializeField] private List<GameObject> Pieces;
     [SerializeField] private TetrisMainGeneration MainGen;
+
+    [SerializeField] private ParticleSystem DestroyedParticles;
+
+    private bool DestroyFound = false;
+
+    [SerializeField] private TextMeshProUGUI TETRIS_TEXT;
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +70,6 @@ public class TetrisBoardManager : MonoBehaviour
         Tile.transform.parent = BorderParent.transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         /*        StringBuilder sb = new StringBuilder();
@@ -120,8 +126,27 @@ public class TetrisBoardManager : MonoBehaviour
         }
     }
 
+    private void UpdateVisuals(int x, int y)
+    {
+        for (int i = 0; i < BorderInner.Count; i++)
+        {
+            if (BorderInner[i].transform.position.x == x - 5 && BorderInner[i].transform.position.y == y - 9)
+            {
+                SpriteRenderer Sprite = BorderInner[i].GetComponent<SpriteRenderer>();
+                SpriteRenderer DefaultSprite = DefaultTile.GetComponent<SpriteRenderer>();
+                Sprite.color = Color.Lerp(Sprite.color, new Color(DefaultSprite.color.r, DefaultSprite.color.g, DefaultSprite.color.b, 25f / 255f), 2.0f / Time.deltaTime);
+                ParticleSystem ParticleEffect = Instantiate(DestroyedParticles, BorderInner[i].transform.position, Quaternion.identity) as ParticleSystem;
+                ParticleEffect.textureSheetAnimation.SetSprite(0, BorderInner[i].GetComponent<SpriteRenderer>().sprite);
+                ParticleEffect.Play();
+                Destroy(ParticleEffect.gameObject, 1.5f);
+            }
+        }
+    }
+
     public void FindFinishedRow()
     {
+        DestroyFound = false;
+        int LinesDestroyed = 0;
         for (int y = GridSize.GetLength(1) - 1; y >= 0; y--)
         {
             int Found = 0;
@@ -147,8 +172,21 @@ public class TetrisBoardManager : MonoBehaviour
 
             if (Found == 9)
             {
-                DeleteRow(y);
+                LinesDestroyed++;
+                StartCoroutine(DeleteRow(y));
+                //DeleteRow(y);
+                DestroyFound = true;
             }
+        }
+
+        if(LinesDestroyed == 4)
+        {
+            TETRIS_TEXT.gameObject.SetActive(true);
+        }
+
+        if (!DestroyFound)
+        {
+            MainGen.GenerateBlock();
         }
     }
 
@@ -192,7 +230,41 @@ public class TetrisBoardManager : MonoBehaviour
         return false;
     }
 
-    void DeleteRow(int RowFound)
+    /*    void DeleteRow(int RowFound)
+        {
+            Score.SetCurrentScore();
+            Score.SetCurrentLevel();
+
+            int[,] tempArray = GridSize;
+
+            for (int y = 0; y < tempArray.GetLength(1); y++)
+            {
+                for (int x = 1; x < tempArray.GetLength(0) - 1; x++)
+                {
+                    if(y == RowFound)
+                    {
+                        UpdateVisuals(x, y);
+                    }
+
+
+                    if (y >= RowFound)
+                    {
+                        if (y < tempArray.GetLength(1) - 1)
+                        {
+                            if (tempArray[x, y + 1] != 2)
+                            {
+                                tempArray[x, y] = tempArray[x, y + 1];
+                                UpdateIndividualPieces(x, y);
+                            }
+                        }
+                    }
+                }
+            }
+
+            GridSize = tempArray;
+        }*/
+
+    IEnumerator DeleteRow(int RowFound)
     {
         Score.SetCurrentScore();
         Score.SetCurrentLevel();
@@ -203,6 +275,22 @@ public class TetrisBoardManager : MonoBehaviour
         {
             for (int x = 1; x < tempArray.GetLength(0) - 1; x++)
             {
+                if (y == RowFound)
+                {
+                    UpdateVisuals(x, y);
+                    yield return new WaitForSeconds(0.05f);
+                }
+            }
+        }
+
+
+        yield return new WaitForSeconds(0.5f);
+        for (int y = 0; y < tempArray.GetLength(1); y++)
+        {
+            for (int x = 1; x < tempArray.GetLength(0) - 1; x++)
+            {
+
+
                 if (y >= RowFound)
                 {
                     if (y < tempArray.GetLength(1) - 1)
@@ -218,5 +306,17 @@ public class TetrisBoardManager : MonoBehaviour
         }
 
         GridSize = tempArray;
+        if (TETRIS_TEXT.gameObject.activeInHierarchy && DestroyFound)
+        {
+            MainGen.GenerateBlock();
+            DestroyFound = false;
+            yield return new WaitForSeconds(0.5f);
+            TETRIS_TEXT.gameObject.SetActive(false);
+        }
+        else if (DestroyFound)
+        {
+            MainGen.GenerateBlock();
+            DestroyFound = false;
+        }
     }
 }

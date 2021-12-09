@@ -273,10 +273,10 @@ public class TetrisPieceMovement : MonoBehaviour
         }
 
         CurrentlyControlling = false;
-        if (PieceGenerator.enabled)
+/*        if (PieceGenerator.enabled)
         {
             PieceGenerator.GenerateBlock();
-        }
+        }*/
         GridManager.FindFinishedRow();
         Destroy(GhostBoy);
         Destroy(gameObject);
