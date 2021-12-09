@@ -47,7 +47,6 @@ public class TetrisPieceMovement : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         SetupGrid(FoundPiece());
@@ -62,12 +61,7 @@ public class TetrisPieceMovement : MonoBehaviour
         if (ScoreHandler != null)
         {
             GetScoreForSpeed();
-            //InvokeRepeating("BlockDescent", 1.0f, decreaseSpeed);
         }
-        /*        else
-                {
-                    InvokeRepeating("BlockDescent", 1.0f, decreaseSpeed);
-                }*/
 
         GameObject Spawned = Instantiate(GhostyBoyToSpawn, CurrentPos, Quaternion.identity);
         GhostBoy = Spawned;
@@ -89,7 +83,7 @@ public class TetrisPieceMovement : MonoBehaviour
         else
         {
             decreaseSpeed = 0.05f;
-            for (int i = ScoreHandler.GetLevel()-1; i < ScoreHandler.GetLevel(); i++)
+            for (int i = ScoreHandler.GetLevel() - 1; i < ScoreHandler.GetLevel(); i++)
             {
                 decreaseSpeed -= 0.005f;
             }
@@ -273,17 +267,17 @@ public class TetrisPieceMovement : MonoBehaviour
                             GridManager.GridSize[y, x] = 9;
                             break;
                     }
+                    GridManager.UpdateIndividualPieces(y, x);
                 }
             }
         }
 
-        //GridManager.UpdateBlocks();
-        GridManager.FindFinishedRow();
         CurrentlyControlling = false;
         if (PieceGenerator.enabled)
         {
             PieceGenerator.GenerateBlock();
         }
+        GridManager.FindFinishedRow();
         Destroy(GhostBoy);
         Destroy(gameObject);
     }
