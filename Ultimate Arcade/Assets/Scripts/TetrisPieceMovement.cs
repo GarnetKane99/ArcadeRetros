@@ -273,10 +273,10 @@ public class TetrisPieceMovement : MonoBehaviour
         }
 
         CurrentlyControlling = false;
-/*        if (PieceGenerator.enabled)
-        {
-            PieceGenerator.GenerateBlock();
-        }*/
+        /*        if (PieceGenerator.enabled)
+                {
+                    PieceGenerator.GenerateBlock();
+                }*/
         GridManager.FindFinishedRow();
         Destroy(GhostBoy);
         Destroy(gameObject);
@@ -710,6 +710,7 @@ public class TetrisPieceMovement : MonoBehaviour
                     //if checks fail (i.e. wall/piece near it before it rotates), rotate will fail and get reverted
                     if (GridManager.GridSize[x + xOffset + tempXOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1 + tempYOffset] == 2 || OnPlacedBlockRot(x + tempXOffset + xOffset, y + tempYOffset + GridManager.GridSize.GetLength(1) + yOffset - 1))
                     {
+                        //Debug.Log("Test Case : " + TestNum + " Failed X: " + tempXOffset + "\nFailed Y: " + tempYOffset);
                         //negative 90 algorithm
                         for (int x1 = 0; x1 < matSize / 2; x1++)
                         {

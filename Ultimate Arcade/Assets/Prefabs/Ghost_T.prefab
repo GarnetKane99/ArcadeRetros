@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8937014983819456370}
   - component: {fileID: 8937014983819456381}
-  - component: {fileID: 9128143044167711614}
   m_Layer: 0
   m_Name: Tetris_Lime (1)
   m_TagString: Untagged
@@ -83,23 +82,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9128143044167711614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8937014983819456371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &8937014983834199252
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +133,7 @@ MonoBehaviour:
   DirToGo: {x: 0, y: 0}
   CurrentPos: {x: 0, y: 0}
   CurrentRot: {x: 0, y: 0, z: 0}
+  GridManager: {fileID: 0}
   yOffset: -1
   xOffset: 4
   zOffset: 0
@@ -164,7 +147,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8937014984225607016}
   - component: {fileID: 8937014984225607019}
-  - component: {fileID: 3048558250716169564}
   m_Layer: 0
   m_Name: Tetris_Lime (2)
   m_TagString: Untagged
@@ -237,23 +219,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3048558250716169564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8937014984225607017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &8937014984387303504
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +229,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8937014984387303507}
   - component: {fileID: 8937014984387303506}
-  - component: {fileID: 3987762361029356105}
   m_Layer: 0
   m_Name: Tetris_Lime (3)
   m_TagString: Untagged
@@ -337,23 +301,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3987762361029356105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8937014984387303504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &8937014985273833454
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +311,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8937014985273833449}
   - component: {fileID: 8937014985273833448}
-  - component: {fileID: 6270865663980370918}
   m_Layer: 0
   m_Name: Tetris_Lime
   m_TagString: Untagged
@@ -437,20 +383,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6270865663980370918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8937014985273833454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}

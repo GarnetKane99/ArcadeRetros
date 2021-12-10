@@ -15,9 +15,8 @@ public class TetrisBoardManager : MonoBehaviour
     public GameObject GameOverScreen;
     [SerializeField] private TetrisScoreHandler Score;
     [SerializeField] private GameObject DefaultTile;
-    [SerializeField] private List<GameObject> Pieces;
+    //[SerializeField] private List<GameObject> Pieces;
     [SerializeField] private TetrisMainGeneration MainGen;
-
     [SerializeField] private ParticleSystem DestroyedParticles;
 
     private bool DestroyFound = false;
@@ -128,17 +127,23 @@ public class TetrisBoardManager : MonoBehaviour
 
     private void UpdateVisuals(int x, int y)
     {
+        float t = 0;
+
         for (int i = 0; i < BorderInner.Count; i++)
         {
             if (BorderInner[i].transform.position.x == x - 5 && BorderInner[i].transform.position.y == y - 9)
             {
                 SpriteRenderer Sprite = BorderInner[i].GetComponent<SpriteRenderer>();
                 SpriteRenderer DefaultSprite = DefaultTile.GetComponent<SpriteRenderer>();
-                Sprite.color = Color.Lerp(Sprite.color, new Color(DefaultSprite.color.r, DefaultSprite.color.g, DefaultSprite.color.b, 25f / 255f), 2.0f / Time.deltaTime);
-                ParticleSystem ParticleEffect = Instantiate(DestroyedParticles, BorderInner[i].transform.position, Quaternion.identity) as ParticleSystem;
-                ParticleEffect.textureSheetAnimation.SetSprite(0, BorderInner[i].GetComponent<SpriteRenderer>().sprite);
-                ParticleEffect.Play();
-                Destroy(ParticleEffect.gameObject, 1.5f);
+                do
+                {
+                    t += Time.deltaTime / 2.0f;
+                    Sprite.color = Color.Lerp(Sprite.color, new Color(DefaultSprite.color.r, DefaultSprite.color.g, DefaultSprite.color.b, 25f / 255f), t);
+                }
+                while (t < 1.0f);
+                ParticleSystem ParticlesFound = BorderInner[i].GetComponentInChildren<ParticleSystem>();
+                ParticlesFound.textureSheetAnimation.SetSprite(0, BorderInner[i].GetComponent<SpriteRenderer>().sprite);
+                ParticlesFound.Play();
             }
         }
     }
@@ -174,14 +179,21 @@ public class TetrisBoardManager : MonoBehaviour
             {
                 LinesDestroyed++;
                 StartCoroutine(DeleteRow(y));
-                //DeleteRow(y);
                 DestroyFound = true;
             }
         }
 
-        if(LinesDestroyed == 4)
+        float t = 0;
+        if (LinesDestroyed == 4)
         {
+            TETRIS_TEXT.color = new Color(1, 1, 1, 0);
             TETRIS_TEXT.gameObject.SetActive(true);
+            TETRIS_TEXT.text = "TETRIS\n" + (Score.GetLevel() * 1000).ToString();
+            do
+            {
+                t += Time.deltaTime / 2.0f;
+                TETRIS_TEXT.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1, 1), t);
+            } while (t < 1.0f);
         }
 
         if (!DestroyFound)
@@ -230,40 +242,6 @@ public class TetrisBoardManager : MonoBehaviour
         return false;
     }
 
-    /*    void DeleteRow(int RowFound)
-        {
-            Score.SetCurrentScore();
-            Score.SetCurrentLevel();
-
-            int[,] tempArray = GridSize;
-
-            for (int y = 0; y < tempArray.GetLength(1); y++)
-            {
-                for (int x = 1; x < tempArray.GetLength(0) - 1; x++)
-                {
-                    if(y == RowFound)
-                    {
-                        UpdateVisuals(x, y);
-                    }
-
-
-                    if (y >= RowFound)
-                    {
-                        if (y < tempArray.GetLength(1) - 1)
-                        {
-                            if (tempArray[x, y + 1] != 2)
-                            {
-                                tempArray[x, y] = tempArray[x, y + 1];
-                                UpdateIndividualPieces(x, y);
-                            }
-                        }
-                    }
-                }
-            }
-
-            GridSize = tempArray;
-        }*/
-
     IEnumerator DeleteRow(int RowFound)
     {
         Score.SetCurrentScore();
@@ -284,7 +262,7 @@ public class TetrisBoardManager : MonoBehaviour
         }
 
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
         for (int y = 0; y < tempArray.GetLength(1); y++)
         {
             for (int x = 1; x < tempArray.GetLength(0) - 1; x++)

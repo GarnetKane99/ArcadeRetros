@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6536792952518258044}
   - component: {fileID: 6536792952518258045}
-  - component: {fileID: 2782708814182858993}
   m_Layer: 0
   m_Name: Tetris_Purple (2)
   m_TagString: Untagged
@@ -83,23 +82,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2782708814182858993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6536792952518258035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &6536792953314312727
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +133,7 @@ MonoBehaviour:
   DirToGo: {x: 0, y: 0}
   CurrentPos: {x: 0, y: 0}
   CurrentRot: {x: 0, y: 0, z: 0}
+  GridManager: {fileID: 0}
   yOffset: -1
   xOffset: 4
   zOffset: 0
@@ -164,7 +147,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6536792953477287768}
   - component: {fileID: 6536792953477287769}
-  - component: {fileID: 4263189712583186592}
   m_Layer: 0
   m_Name: Tetris_Purple
   m_TagString: Untagged
@@ -237,23 +219,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4263189712583186592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6536792953477287775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &6536792953987557702
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +229,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6536792953987557703}
   - component: {fileID: 6536792953987557696}
-  - component: {fileID: 5196823418387680236}
   m_Layer: 0
   m_Name: Tetris_Purple (3)
   m_TagString: Untagged
@@ -337,23 +301,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5196823418387680236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6536792953987557702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &6536792954312013283
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +311,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6536792954312013292}
   - component: {fileID: 6536792954312013293}
-  - component: {fileID: 870245636871899180}
   m_Layer: 0
   m_Name: Tetris_Purple (1)
   m_TagString: Untagged
@@ -437,20 +383,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &870245636871899180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6536792954312013283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}

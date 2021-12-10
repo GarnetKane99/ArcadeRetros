@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8158694290802490805}
   - component: {fileID: 8158694290802490804}
-  - component: {fileID: 1374946736859568015}
   m_Layer: 0
   m_Name: Tetris_Aqua (2)
   m_TagString: Untagged
@@ -83,23 +82,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1374946736859568015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8158694290802490806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &8158694291071248526
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +133,7 @@ MonoBehaviour:
   DirToGo: {x: 0, y: 0}
   CurrentPos: {x: 0, y: 0}
   CurrentRot: {x: 0, y: 0, z: 0}
+  GridManager: {fileID: 0}
   yOffset: -1
   xOffset: 4
   zOffset: 0
@@ -164,7 +147,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8158694291793080818}
   - component: {fileID: 8158694291793080817}
-  - component: {fileID: 6456123846956974604}
   m_Layer: 0
   m_Name: Tetris_Aqua (1)
   m_TagString: Untagged
@@ -237,23 +219,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6456123846956974604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8158694291793080819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &8158694292066950859
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +229,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8158694292066950858}
   - component: {fileID: 8158694292066950857}
-  - component: {fileID: 314474648096305534}
   m_Layer: 0
   m_Name: Tetris_Aqua (3)
   m_TagString: Untagged
@@ -337,23 +301,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &314474648096305534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8158694292066950859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}
 --- !u!1 &8158694292166812174
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +311,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8158694292166812173}
   - component: {fileID: 8158694292166812172}
-  - component: {fileID: 5717026100276749286}
   m_Layer: 0
   m_Name: Tetris_Aqua
   m_TagString: Untagged
@@ -437,20 +383,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5717026100276749286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8158694292166812174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a1002922de9ad43995cfeddcd7fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yDefaultOffset: 0
-  UpdatePos: 0
-  foundX: 0
-  xFound: 0
-  Pos: {x: 0, y: 0}

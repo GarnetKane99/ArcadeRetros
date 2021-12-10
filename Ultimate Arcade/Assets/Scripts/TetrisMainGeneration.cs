@@ -11,25 +11,18 @@ public class TetrisMainGeneration : MonoBehaviour
     public Transform NEXT_PIECE;
     public int RandomNextBlock;
     GameObject NextBlock;
+
     // Start is called before the first frame update
     void Start()
     {
         GenerateFirstBlock();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void GenerateFirstBlock()
     {
         int RandomBlock = Random.Range(0, 7);
-        //int RandomBlock = 0;
         GameObject CurPiece = Instantiate(POSSIBLE_PIECES[RandomBlock], SPAWN_POS);
         RandomNextBlock = Random.Range(0, 7);
-        //RandomNextBlock = 0;
         GameObject NextPiece = Instantiate(POSSIBLE_NEXTPIECES[RandomNextBlock], NEXT_PIECE);
         NextBlock = NextPiece;
         CurPiece.transform.parent = null;
@@ -40,7 +33,6 @@ public class TetrisMainGeneration : MonoBehaviour
         Destroy(NextBlock);
         GameObject CurPiece = Instantiate(POSSIBLE_PIECES[RandomNextBlock], SPAWN_POS);
         RandomNextBlock = Random.Range(0, 7);
-        //RandomNextBlock = 0;
         GameObject NextPiece = Instantiate(POSSIBLE_NEXTPIECES[RandomNextBlock], NEXT_PIECE);
         NextBlock = NextPiece;
         CurPiece.transform.parent = null;
