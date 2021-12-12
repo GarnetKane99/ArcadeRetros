@@ -34,7 +34,8 @@ public class TetrisPieceMovement : MonoBehaviour
 
     [SerializeField] private GameObject GhostyBoyToSpawn;
     [SerializeField] private GameObject GhostBoy;
-
+    [SerializeField] private AudioSource QuickPlaceSound;
+    [SerializeField] private TetrisPauseHandler PauseFound;
     private void Awake()
     {
         CurrentlyControlling = true;
@@ -53,6 +54,7 @@ public class TetrisPieceMovement : MonoBehaviour
         GridManager = FindObjectOfType<TetrisBoardManager>();
         PieceGenerator = FindObjectOfType<TetrisMainGeneration>();
         ScoreHandler = FindObjectOfType<TetrisScoreHandler>();
+        PauseFound = FindObjectOfType<TetrisPauseHandler>();
 
         if (GridManager != null)
         {
@@ -380,6 +382,7 @@ public class TetrisPieceMovement : MonoBehaviour
         {
             if (!StopDescent)
             {
+                QuickPlaceSound.Play();
                 CancelInvoke("BlockDescent");
                 BlockDescentFast();
             }
@@ -402,35 +405,38 @@ public class TetrisPieceMovement : MonoBehaviour
 
     void GetInput()
     {
-        //left and right movement
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (!PauseFound.currentlyPaused)
         {
-            DirToGo.x = -1;
-        }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            DirToGo.x = 1;
-        }
-        else
-        {
-            DirToGo.x = 0;
-        }
-        //up and down movement
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            DirToGo.y = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            DirToGo.y = -1;
-        }
-        else
-        {
-            DirToGo.y = 0;
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpacePressed = true;
+            //left and right movement
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                DirToGo.x = -1;
+            }
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                DirToGo.x = 1;
+            }
+            else
+            {
+                DirToGo.x = 0;
+            }
+            //up and down movement
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                DirToGo.y = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                DirToGo.y = -1;
+            }
+            else
+            {
+                DirToGo.y = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SpacePressed = true;
+            }
         }
     }
 

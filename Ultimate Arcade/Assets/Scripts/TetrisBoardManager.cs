@@ -22,32 +22,70 @@ public class TetrisBoardManager : MonoBehaviour
     private bool DestroyFound = false;
 
     [SerializeField] private TextMeshProUGUI TETRIS_TEXT;
+    [SerializeField] private AudioSource BackgroundMusic;
+    [SerializeField] private AudioSource LineClearSound;
+    [SerializeField] private AudioSource GameOverMusic;
+    [SerializeField] private AudioSource TetrisGotSound;
 
     // Start is called before the first frame update
     void Start()
     {
         BorderChild = new List<GameObject>();
         BorderInner = new List<GameObject>();
-        InitializeGrid();
+        StartCoroutine(InitializeGrid());
         MainGen = GetComponent<TetrisMainGeneration>();
     }
 
-    void InitializeGrid()
+    /*    void InitializeGrid()
+        {
+            GridSize = new int[11, 22];
+            for (int x = 0; x < GridSize.GetLength(0); x++)
+            {
+                for (int y = 0; y < GridSize.GetLength(1); y++)
+                {
+                    if (x == 0 || x == GridSize.GetLength(0) - 1 || y == 0)
+                    {
+                        DrawGrid(x, y, 1);
+                        GridSize[x, y] = 2;
+                    }
+                    else
+                    {
+                        DrawGrid(x, y, 0);
+                        GridSize[x, y] = 0;
+                    }
+                }
+            }
+        }*/
+    IEnumerator InitializeGrid()
     {
         GridSize = new int[11, 22];
         for (int x = 0; x < GridSize.GetLength(0); x++)
         {
             for (int y = 0; y < GridSize.GetLength(1); y++)
             {
+                bool PlaceFound = false;
                 if (x == 0 || x == GridSize.GetLength(0) - 1 || y == 0)
                 {
                     DrawGrid(x, y, 1);
+                    PlaceFound = true;
                     GridSize[x, y] = 2;
                 }
                 else
                 {
                     DrawGrid(x, y, 0);
+                    PlaceFound = true;
                     GridSize[x, y] = 0;
+                }
+                if (PlaceFound)
+                {
+                    yield return new WaitForSeconds(0.005f);
+                }
+
+                if(x == GridSize.GetLength(0) - 1 && y == GridSize.GetLength(1) - 1)
+                {
+                    yield return new WaitForSeconds(1.0f);
+                    MainGen.GenerateFirstBlock();
+                    BackgroundMusic.Play();
                 }
             }
         }
@@ -127,24 +165,27 @@ public class TetrisBoardManager : MonoBehaviour
 
     private void UpdateVisuals(int x, int y)
     {
-        float t = 0;
-
         for (int i = 0; i < BorderInner.Count; i++)
         {
             if (BorderInner[i].transform.position.x == x - 5 && BorderInner[i].transform.position.y == y - 9)
             {
                 SpriteRenderer Sprite = BorderInner[i].GetComponent<SpriteRenderer>();
                 SpriteRenderer DefaultSprite = DefaultTile.GetComponent<SpriteRenderer>();
-                do
-                {
-                    t += Time.deltaTime / 2.0f;
-                    Sprite.color = Color.Lerp(Sprite.color, new Color(DefaultSprite.color.r, DefaultSprite.color.g, DefaultSprite.color.b, 25f / 255f), t);
-                }
-                while (t < 1.0f);
+                StartCoroutine(UpdateSprite(Sprite, DefaultSprite, 0.75f));
                 ParticleSystem ParticlesFound = BorderInner[i].GetComponentInChildren<ParticleSystem>();
                 ParticlesFound.textureSheetAnimation.SetSprite(0, BorderInner[i].GetComponent<SpriteRenderer>().sprite);
                 ParticlesFound.Play();
             }
+        }
+    }
+
+    IEnumerator UpdateSprite(SpriteRenderer SpriteFound, SpriteRenderer DefaultSprite, float overTime)
+    {
+        float StartTime = Time.time;
+        while (Time.time < StartTime + overTime)
+        {
+            SpriteFound.color = Color.Lerp(SpriteFound.color, new Color(DefaultSprite.color.r, DefaultSprite.color.g, DefaultSprite.color.b, 25f / 255f), (Time.time - StartTime) / overTime);
+            yield return null;
         }
     }
 
@@ -183,17 +224,17 @@ public class TetrisBoardManager : MonoBehaviour
             }
         }
 
-        float t = 0;
         if (LinesDestroyed == 4)
         {
             TETRIS_TEXT.color = new Color(1, 1, 1, 0);
             TETRIS_TEXT.gameObject.SetActive(true);
-            TETRIS_TEXT.text = "TETRIS\n" + (Score.GetLevel() * 1000).ToString();
-            do
-            {
-                t += Time.deltaTime / 2.0f;
-                TETRIS_TEXT.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1, 1), t);
-            } while (t < 1.0f);
+            StartCoroutine(ShowTetrisText(1.0f));
+            LineClearSound.Play();
+            TetrisGotSound.Play();
+        }
+        else if(LinesDestroyed > 0)
+        {
+            LineClearSound.Play();
         }
 
         if (!DestroyFound)
@@ -202,8 +243,31 @@ public class TetrisBoardManager : MonoBehaviour
         }
     }
 
+    IEnumerator ShowTetrisText(float Overtime)
+    {
+        float StartTime = Time.time;
+        while (Time.time < StartTime + Overtime)
+        {
+            TETRIS_TEXT.color = Color.Lerp(new Color(1, 1, 1, 0), new Color(1, 1, 1, 1), (Time.time - StartTime) / Overtime);
+            yield return null;
+        }
+    }
+
+    IEnumerator HideTetrisText(float Overtime)
+    {
+        float StartTime = Time.time;
+        while (Time.time < StartTime + Overtime)
+        {
+            TETRIS_TEXT.color = Color.Lerp(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0), (Time.time - StartTime) / Overtime);
+            yield return null;
+        }
+        TETRIS_TEXT.gameObject.SetActive(false);
+    }
+
     void EndGame()
     {
+        BackgroundMusic.Stop();
+        GameOverMusic.Play();
         foreach (GameObject BorderChildren in BorderChild)
         {
             SpriteRenderer ColourFound = BorderChildren.GetComponent<SpriteRenderer>();
@@ -267,8 +331,6 @@ public class TetrisBoardManager : MonoBehaviour
         {
             for (int x = 1; x < tempArray.GetLength(0) - 1; x++)
             {
-
-
                 if (y >= RowFound)
                 {
                     if (y < tempArray.GetLength(1) - 1)
@@ -288,8 +350,7 @@ public class TetrisBoardManager : MonoBehaviour
         {
             MainGen.GenerateBlock();
             DestroyFound = false;
-            yield return new WaitForSeconds(0.5f);
-            TETRIS_TEXT.gameObject.SetActive(false);
+            StartCoroutine(HideTetrisText(1.0f));
         }
         else if (DestroyFound)
         {

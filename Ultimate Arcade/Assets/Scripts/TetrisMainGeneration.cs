@@ -15,7 +15,7 @@ public class TetrisMainGeneration : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateFirstBlock();
+        //GenerateFirstBlock();
     }
 
     public void GenerateFirstBlock()
