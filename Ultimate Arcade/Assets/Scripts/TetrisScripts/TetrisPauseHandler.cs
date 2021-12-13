@@ -30,7 +30,7 @@ public class TetrisPauseHandler : MonoBehaviour
 
     void QuitGame()
     {
-
+        SceneManager.LoadScene("MainScene");
     }
 
     private void Update()

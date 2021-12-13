@@ -23,6 +23,6 @@ public class TetrisGameOver : MonoBehaviour
 
     private void MainMenuScene()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainScene");
     }
 }

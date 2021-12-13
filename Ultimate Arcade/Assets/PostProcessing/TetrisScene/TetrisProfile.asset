@@ -36,7 +36,7 @@ MonoBehaviour:
     value: 1
   color:
     overrideState: 1
-    value: {r: 0, g: 1, b: 0.46777582, a: 1}
+    value: {r: 0, g: 1, b: 0.9430566, a: 1}
   fastMode:
     overrideState: 1
     value: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
     value: 100
   mixerRedOutRedIn:
     overrideState: 1
-    value: 100
+    value: 104
   mixerRedOutGreenIn:
     overrideState: 1
     value: 0
