@@ -6,6 +6,9 @@ public class PacmanMapGenerator : MonoBehaviour
 {
     private int[,] MapCoordinates;
     [SerializeField] private GameObject[] MAP_TILES;
+    [SerializeField] private GameObject PACMAN_NODE;
+    [SerializeField] private GameObject PACMAN_PELLET;
+    [SerializeField] private GameObject ParentMapObject, ParentNodeObject, PelletParent;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +32,9 @@ public class PacmanMapGenerator : MonoBehaviour
                 switch (MapCoordinates[x, y])
                 {
                     case 0:
+                        CreateNode(y, x);
+                        break;
+                    case 50:
                         break;
                     default:
                         DrawMap(y, x, MapCoordinates[x, y]);
@@ -37,6 +43,14 @@ public class PacmanMapGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    void CreateNode(int x, int y)
+    {
+        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x-13, y-7), Quaternion.identity);
+        GameObject Pellet = Instantiate(PACMAN_PELLET, new Vector2(x - 13, y - 7), Quaternion.identity);
+        Node.transform.parent = ParentNodeObject.transform;
+        Pellet.transform.parent = PelletParent.transform;
     }
 
     void InitializeMapCoordinates()
@@ -56,15 +70,15 @@ public class PacmanMapGenerator : MonoBehaviour
             {18,0,5,21,21,6,0,5,21,21,21,6,0,25,26,0,5,21,21,21,6,0,5,21,21,6,0,17 }, //row 10
             {18,0,0,0,0,0,0,0,0,0,0,0,0,25,26,0,0,0,0,0,0,0,0,0,0,0,0,17}, //row 11
             {1,20,20,20,20,8,0,7,8,0,7,22,22,14,13,22,22,8,0,7,8,0,7,20,20,20,20,2 }, //row 12
-            {0,0,0,0,0,18,0,25,26,0,5,21,21,21,21,21,21,6,0,25,26,0,17,0,0,0,0,0 }, //row 13
-            {0,0,0,0,0,18,0,25,26,0,0,0,0,0,0,0,0,0,0,25,26,0,17,0,0,0,0,0 }, //row 14
-            {0,0,0,0,0,18,0,25,26,0,32,33,33,33,33,33,33,34,0,25,26,0,17,0,0,0,0,0 }, //row 15
-            {19,19,19,19,19,6,0,5,6,0,30,0,0,0,0,0,0,31,0,5,6,0,5,19,19,19,19,19 }, //row 16
-            {0,0,0,0,0,0,0,0,0,0,30,0,0,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0 }, //row 17
-            {20,20,20,20,20,8,0,7,8,0,30,0,0,0,0,0,0,31,0,7,8,0,7,20,20,20,20,20 }, //row 18
-            {0,0,0,0,0,18,0,25,26,0,27,28,35,0,0,36,28,29,0,25,26,0,17,0,0,0,0,0 }, // row 19
-            {0,0,0,0,0,18,0,25,26,0,0,0,0,0,0,0,0,0,0,25,26,0,17,0,0,0,0,0 }, //row 20
-            {0,0,0,0,0,18,0,25,13,22,22,8,0,7,8,0,7,22,22,14,26,0,17,0,0,0,0,0 }, //row 21
+            {50,50,50,50,50,18,0,25,26,0,5,21,21,21,21,21,21,6,0,25,26,0,17,50,50,50,50,50 }, //row 13
+            {50,50,50,50,50,18,0,25,26,0,0,0,0,0,0,0,0,0,0,25,26,0,17,50,50,50,50,50 }, //row 14
+            {50,50,50,50,50,18,0,25,26,0,32,33,33,33,33,33,33,34,0,25,26,0,17,50,50,50,50,50 }, //row 15
+            {19,19,19,19,19,6,0,5,6,0,30,50,50,50,50,50,50,31,0,5,6,0,5,19,19,19,19,19 }, //row 16
+            {0,0,0,0,0,0,0,0,0,0,30,50,50,50,50,50,50,31,0,0,0,0,0,0,0,0,0,0 }, //row 17
+            {20,20,20,20,20,8,0,7,8,0,30,50,50,50,50,50,50,31,0,7,8,0,7,20,20,20,20,20 }, //row 18
+            {50,50,50,50,50,18,0,25,26,0,27,28,35,50,50,36,28,29,0,25,26,0,17,50,50,50,50,50 }, // row 19
+            {50,50,50,50,50,18,0,25,26,0,0,0,0,0,0,0,0,0,0,25,26,0,17,50,50,50,50,50 }, //row 20
+            {50,50,50,50,50,18,0,25,13,22,22,8,0,7,8,0,7,22,22,14,26,0,17,50,50,50,50,50 }, //row 21
             {3,19,19,19,19,6,0,25,15,21,21,6,0,25,26,0,5,21,21,16,26,0,5,19,19,19,19,4 }, //row 22
             {18,0,0,0,0,0,0,25,26,0,0,0,0,25,26,0,0,0,0,25,26,0,0,0,0,0,0,17 }, //row 23
             {18,0,7,22,22,8,0,25,26,0,7,22,22,14,13,22,22,8,0,25,26,0,7,22,22,8,0,17 }, //row 24
@@ -80,6 +94,7 @@ public class PacmanMapGenerator : MonoBehaviour
 
     void DrawMap(int x, int y, int Pos)
     {
-        GameObject Border = Instantiate(MAP_TILES[Pos-1], new Vector2(x - 13, y - 7), Quaternion.identity);
+        GameObject Border = Instantiate(MAP_TILES[Pos - 1], new Vector2(x - 13, y - 7), Quaternion.identity);
+        Border.transform.parent = ParentMapObject.transform;
     }
 }
