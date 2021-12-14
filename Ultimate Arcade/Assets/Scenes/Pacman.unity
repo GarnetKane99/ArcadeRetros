@@ -279,7 +279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131718398}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9, z: -10}
+  m_LocalPosition: {x: 0, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -368,6 +368,7 @@ MonoBehaviour:
   - {fileID: 1103008429670323424, guid: cbdbf563cbf5dcf4a9c0d40a54607b36, type: 3}
   PACMAN_NODE: {fileID: 3038437621946589126, guid: eedb75ce160dbd545a0cded8288246a5, type: 3}
   PACMAN_PELLET: {fileID: 4611751547525322644, guid: fd9a7f67c607ea648b9147f0a53a4099, type: 3}
+  PACMAN_PELLET_LARGE: {fileID: 6738661464540853443, guid: 2dc352bcc65e39d4fac58ca9d7aa4fd0, type: 3}
   ParentMapObject: {fileID: 829723836}
   ParentNodeObject: {fileID: 1163699860}
   PelletParent: {fileID: 2004776304}
