@@ -73,7 +73,7 @@ public class PacmanGhostController : MonoBehaviour
                     pathFound = true;
                 }*/
 
-        if (Path.Count == 1)
+        if (Path.Count == 0)
         {
             pathFound = false;
             Path = new List<GameObject>();
@@ -98,10 +98,7 @@ public class PacmanGhostController : MonoBehaviour
             {
                 for (int i = 0; i < Path.Count - 1; i++)
                 {
-                    //for (int j = i + 1; j < Path.Count; j++)
-                    //{
                     Debug.DrawLine(Path[i].transform.position, Path[i + 1].transform.position, new Color(0, 0, 1));
-                    //}
                 }
 
 
@@ -113,6 +110,11 @@ public class PacmanGhostController : MonoBehaviour
                     {
                         CurrentNode = Path[x + 1];
                         Path.RemoveAt(x);
+                    }
+                    else
+                    {
+                        CurrentNode = Path[x];
+                        Path.RemoveAt(0);
                     }
                 }
             }

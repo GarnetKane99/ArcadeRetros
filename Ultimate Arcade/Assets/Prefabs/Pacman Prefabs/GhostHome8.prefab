@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2591226804003074420}
   - component: {fileID: 2591226804003074423}
   m_Layer: 0
-  m_Name: EntranceLeft
-  m_TagString: Untagged
+  m_Name: GhostHome8
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -376,6 +376,7 @@ MonoBehaviour:
   Pinky: {fileID: 4946213273749612364, guid: b9dc98da9124bd44d911e911330de304, type: 3}
   Blinky: {fileID: 8000846289429851843, guid: f8af1b6abe30c344ba2dfe31991f0100, type: 3}
   Clyde: {fileID: 7663757516490502230, guid: 346d7f8276d674d40891052ae22f3eb2, type: 3}
+  PacmanPrefab: {fileID: 3919150273769056051, guid: 0f12e3f8312476242a2faa8a9d22a818, type: 3}
   AIManager: {fileID: 1571976883}
   NodeList: []
 --- !u!1 &334589846

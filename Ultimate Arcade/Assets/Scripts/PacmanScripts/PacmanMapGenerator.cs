@@ -9,7 +9,7 @@ public class PacmanMapGenerator : MonoBehaviour
     [SerializeField] private GameObject PACMAN_NODE;
     [SerializeField] private GameObject PACMAN_PELLET, PACMAN_PELLET_LARGE;
     [SerializeField] private GameObject ParentMapObject, ParentNodeObject, PelletParent;
-    [SerializeField] private GameObject Inky, Pinky, Blinky, Clyde;
+    [SerializeField] private GameObject Inky, Pinky, Blinky, Clyde, PacmanPrefab;
     [SerializeField] private PacmanAIManager AIManager;
 
     public List<GameObject> NodeList;
@@ -148,8 +148,12 @@ public class PacmanMapGenerator : MonoBehaviour
             }
         }
         GameObject PinkyGO = Instantiate(Pinky, new Vector2(0.5f, 9), Quaternion.identity);
+
+        GameObject PacmanGO = Instantiate(PacmanPrefab, new Vector2(0.5f, 0), Quaternion.identity);
+        PacmanController PacController = PacmanGO.GetComponent<PacmanController>();
         yield return new WaitForSeconds(0.5f);
         GameObject ClydeGO = Instantiate(Clyde, new Vector2(2.5f, 9), Quaternion.identity);
+        PacController.GameStarted = true;
     }
 
     void AddConnections(GameObject From, GameObject To)

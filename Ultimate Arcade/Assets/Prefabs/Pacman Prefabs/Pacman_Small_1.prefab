@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 843321069987228854}
   m_Layer: 0
   m_Name: Pacman_Small_1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
