@@ -9,18 +9,20 @@ public class PacmanMapGenerator : MonoBehaviour
     [SerializeField] private GameObject PACMAN_NODE;
     [SerializeField] private GameObject PACMAN_PELLET, PACMAN_PELLET_LARGE;
     [SerializeField] private GameObject ParentMapObject, ParentNodeObject, PelletParent;
+    [SerializeField] private GameObject Inky, Pinky, Blinky, Clyde;
+    [SerializeField] private PacmanAIManager AIManager;
+
+    public List<GameObject> NodeList;
+    private List<GameObject> SpecialNode;
+    int NodeCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        NodeList = new List<GameObject>();
+        SpecialNode = new List<GameObject>();
         InitializeMapCoordinates();
         StartCoroutine(CreateMap());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     IEnumerator CreateMap()
@@ -40,6 +42,9 @@ public class PacmanMapGenerator : MonoBehaviour
                     case 51:
                         CreateLargePellet(y, x);
                         break;
+                    case 55:
+                        CreateSpecialNode(y, x);
+                        break;
                     case 60:
                         break;
                     default:
@@ -47,29 +52,111 @@ public class PacmanMapGenerator : MonoBehaviour
                         yield return new WaitForSeconds(0.01f);
                         break;
                 }
+
+                if (x == MapCoordinates.GetLength(0) - 1 && y == MapCoordinates.GetLength(1) - 1)
+                {
+                    FindConnections();
+                }
             }
         }
     }
 
     void CreateNode(int x, int y)
     {
-        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x-13, y-7), Quaternion.identity);
+        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x - 13, y - 7), Quaternion.identity);
         GameObject Pellet = Instantiate(PACMAN_PELLET, new Vector2(x - 13, y - 7), Quaternion.identity);
         Node.transform.parent = ParentNodeObject.transform;
+        Node.name = "Node: " + NodeCount;
+        NodeCount++;
         Pellet.transform.parent = PelletParent.transform;
+        NodeList.Add(Node);
     }
 
     void CreateNodeToo(int x, int y)
     {
-        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x-13, y-7), Quaternion.identity);
+        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x - 13, y - 7), Quaternion.identity);
         Node.transform.parent = ParentNodeObject.transform;
+        Node.name = "Node: " + NodeCount;
+        NodeCount++;
+        NodeList.Add(Node);
     }
 
+    void CreateSpecialNode(int x, int y)
+    {
+        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x - 13, y - 7), Quaternion.identity);
+        Node.transform.parent = ParentNodeObject.transform;
+        Node.name = "Node: " + NodeCount;
+        NodeCount++;
+        NodeList.Add(Node);
+        SpecialNode.Add(Node);
+    }
     void CreateLargePellet(int x, int y)
     {
         GameObject LargePellete = Instantiate(PACMAN_PELLET_LARGE, new Vector2(x - 13, y - 7), Quaternion.identity);
         LargePellete.transform.parent = PelletParent.transform;
+
+        GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x - 13, y - 7), Quaternion.identity);
+        Node.transform.parent = ParentNodeObject.transform;
+        Node.name = "Node: " + NodeCount;
+        NodeCount++;
+        NodeList.Add(Node);
     }
+
+    void FindConnections()
+    {
+        AIManager.TotalNodeCount = NodeList.Count;
+        for (int i = 0; i < NodeList.Count; i++)
+        {
+            for (int j = i + 1; j < NodeList.Count; j++)
+            {
+                if (Vector2.Distance(NodeList[i].transform.position, NodeList[j].transform.position) > 0 &&
+                Vector2.Distance(NodeList[i].transform.position, NodeList[j].transform.position) <= 1.0f)
+                {
+                    AddConnections(NodeList[i], NodeList[j]);
+                    AddConnections(NodeList[j], NodeList[i]);
+                }
+            }
+        }
+
+        for (int i = 0; i < SpecialNode.Count; i++)
+        {
+            for (int j = i + 1; j < SpecialNode.Count; j++)
+            {
+                //Debug.Log("Called");
+                AddConnections(SpecialNode[i], SpecialNode[j]);
+                AddConnections(SpecialNode[j], SpecialNode[i]);
+            }
+        }
+        StartCoroutine(SpawnGhosts());
+    }
+
+    IEnumerator SpawnGhosts()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GameObject InkyGO = Instantiate(Inky, new Vector2(-1.5f, 9), Quaternion.identity);
+        yield return new WaitForSeconds(0.5f);
+        GameObject BlinkyGO = Instantiate(Blinky, new Vector2(0.5f, 12), Quaternion.identity);
+        PacmanGhostController BlinkyController = BlinkyGO.GetComponent<PacmanGhostController>();
+        BlinkyController.PacAIManager = AIManager;
+        BlinkyController.PacMap = this;
+        foreach (GameObject Node in NodeList)
+        {
+            if (Node.transform.position.x - 0.5f == BlinkyGO.transform.position.x && Node.transform.position.y == BlinkyGO.transform.position.y)
+            {
+                BlinkyController.CurrentNode = Node;
+                break;
+            }
+        }
+        GameObject PinkyGO = Instantiate(Pinky, new Vector2(0.5f, 9), Quaternion.identity);
+        yield return new WaitForSeconds(0.5f);
+        GameObject ClydeGO = Instantiate(Clyde, new Vector2(2.5f, 9), Quaternion.identity);
+    }
+
+    void AddConnections(GameObject From, GameObject To)
+    {
+        From.GetComponent<PacNodeController>().ConnectedNodes.Add(To);
+    }
+
 
     void InitializeMapCoordinates()
     {
@@ -92,7 +179,7 @@ public class PacmanMapGenerator : MonoBehaviour
             {60,60,60,60,60,18,0,25,26,50,50,50,50,50,50,50,50,50,50,25,26,0,17,60,60,60,60,60 }, //row 14
             {60,60,60,60,60,18,0,25,26,50,32,33,33,33,33,33,33,34,50,25,26,0,17,60,60,60,60,60 }, //row 15
             {19,19,19,19,19,6,0,5,6,50,30,60,60,60,60,60,60,31,50,5,6,0,5,19,19,19,19,19 }, //row 16
-            {50,50,50,50,50,50,0,50,50,50,30,60,60,60,60,60,60,31,50,50,50,0,50,50,50,50,50,50 }, //row 17
+            {55,50,50,50,50,50,0,50,50,50,30,60,60,60,60,60,60,31,50,50,50,0,50,50,50,50,50,55 }, //row 17
             {20,20,20,20,20,8,0,7,8,50,30,60,60,60,60,60,60,31,50,7,8,0,7,20,20,20,20,20 }, //row 18
             {60,60,60,60,60,18,0,25,26,50,27,28,35,60,60,36,28,29,50,25,26,0,17,60,60,60,60,60 }, // row 19
             {60,60,60,60,60,18,0,25,26,50,50,50,50,50,50,50,50,50,50,25,26,0,17,60,60,60,60,60 }, //row 20

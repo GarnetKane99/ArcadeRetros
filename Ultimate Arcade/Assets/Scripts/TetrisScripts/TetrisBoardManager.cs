@@ -109,7 +109,7 @@ public class TetrisBoardManager : MonoBehaviour
 
     void Update()
     {
-        /*        StringBuilder sb = new StringBuilder();
+/*                StringBuilder sb = new StringBuilder();
                 for (int y = GridSize.GetLength(1) - 1; y >= 0; y--)
                 {
                     for (int x = 0; x < GridSize.GetLength(0); x++)
