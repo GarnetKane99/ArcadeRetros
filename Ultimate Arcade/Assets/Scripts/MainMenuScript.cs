@@ -23,6 +23,6 @@ public class MainMenuScript : MonoBehaviour
 
     void LoadPacman()
     {
-
+        SceneManager.LoadScene("Pacman");
     }
 }

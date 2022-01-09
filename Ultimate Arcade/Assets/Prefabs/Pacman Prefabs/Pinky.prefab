@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4946213273749612354}
   - component: {fileID: 4946213273749612355}
+  - component: {fileID: -3400665620866575617}
   m_Layer: 0
   m_Name: Pinky
   m_TagString: Untagged
@@ -82,3 +83,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3400665620866575617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946213273749612364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f52cafa54b00500469153def2dfd8843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: []
+  PacAIManager: {fileID: 0}
+  PacMap: {fileID: 0}
+  CurrentNode: {fileID: 0}
+  pathFound: 0
+  Pacman: {fileID: 0}
+  PacNear: 0
+  LeftLook: {fileID: 6947504433454199015, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
+  RightLook: {fileID: 1860082687399773737, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
+  UpLook: {fileID: -6765104792102637325, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
+  DownLook: {fileID: 9010639624201483317, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}

@@ -134,26 +134,55 @@ public class PacmanMapGenerator : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         GameObject InkyGO = Instantiate(Inky, new Vector2(-1.5f, 9), Quaternion.identity);
+        InkyGO.name = "Inky";
+        PacmanGhostController InkyController = InkyGO.GetComponent<PacmanGhostController>();
+        InkyController.PacAIManager = AIManager;
+        InkyController.PacMap = this;
+
         yield return new WaitForSeconds(0.5f);
+
         GameObject BlinkyGO = Instantiate(Blinky, new Vector2(0.5f, 12), Quaternion.identity);
+        BlinkyGO.name = "Blinky";
         PacmanGhostController BlinkyController = BlinkyGO.GetComponent<PacmanGhostController>();
         BlinkyController.PacAIManager = AIManager;
         BlinkyController.PacMap = this;
+        GameObject NodeToUse = null;
         foreach (GameObject Node in NodeList)
         {
             if (Node.transform.position.x - 0.5f == BlinkyGO.transform.position.x && Node.transform.position.y == BlinkyGO.transform.position.y)
             {
                 BlinkyController.CurrentNode = Node;
+                NodeToUse = Node;
                 break;
             }
         }
+
         GameObject PinkyGO = Instantiate(Pinky, new Vector2(0.5f, 9), Quaternion.identity);
+        PinkyGO.name = "Pinky";
+        PacmanGhostController PinkyController = PinkyGO.GetComponent<PacmanGhostController>();
+        PinkyController.PacAIManager = AIManager;
+        PinkyController.PacMap = this;
+        PinkyController.CurrentNode = NodeToUse;
 
         GameObject PacmanGO = Instantiate(PacmanPrefab, new Vector2(0.5f, 0), Quaternion.identity);
         PacmanController PacController = PacmanGO.GetComponent<PacmanController>();
+
         yield return new WaitForSeconds(0.5f);
+        
         GameObject ClydeGO = Instantiate(Clyde, new Vector2(2.5f, 9), Quaternion.identity);
+        ClydeGO.name = "Clyde";
+        PacmanGhostController ClydeController = ClydeGO.GetComponent<PacmanGhostController>();
+        ClydeController.PacAIManager = AIManager;
+        ClydeController.PacMap = this;
+        ClydeController.CurrentNode = NodeToUse;
+
+        InkyController.CurrentNode = NodeToUse;
         PacController.GameStarted = true;
+
+        BlinkyController.Pacman = PacmanGO;
+        PinkyController.Pacman = PacmanGO;
+        ClydeController.Pacman = PacmanGO;
+        InkyController.Pacman = PacmanGO;
     }
 
     void AddConnections(GameObject From, GameObject To)

@@ -83,7 +83,6 @@ public class PacmanAIManager : MonoBehaviour
                 NodeFound = Node;
             }
         }
-        Debug.Log(NodeFound);
         return NodeFound;
     }
 }
