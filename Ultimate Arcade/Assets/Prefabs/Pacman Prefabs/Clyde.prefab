@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 7663757516490502228}
   - component: {fileID: 7663757516490502229}
   - component: {fileID: 3799780670021051968}
+  - component: {fileID: 49226713665005443}
+  - component: {fileID: 2150851225279236088}
   m_Layer: 0
   m_Name: Clyde
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,9 +102,58 @@ MonoBehaviour:
   PacMap: {fileID: 0}
   CurrentNode: {fileID: 0}
   pathFound: 0
+  SpecialNodes: []
   Pacman: {fileID: 0}
   PacNear: 0
   LeftLook: {fileID: 3501594359879869700, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
   RightLook: {fileID: 524248362361727360, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
   UpLook: {fileID: 5975303351775350219, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
   DownLook: {fileID: -7926995657930263432, guid: 316758c5ed5a92a4f920c1dc290d1538, type: 3}
+  LeftBlueLook: {fileID: -2217843575094370084, guid: b30754999a176844fad458e7afa13349, type: 3}
+  RightBlueLook: {fileID: 176810453080719410, guid: b30754999a176844fad458e7afa13349, type: 3}
+  UpBlueLook: {fileID: 6169507449128129426, guid: b30754999a176844fad458e7afa13349, type: 3}
+  DownBlueLook: {fileID: 1887124213655284028, guid: b30754999a176844fad458e7afa13349, type: 3}
+  LeftDead: {fileID: 8736433014085631234, guid: b0142dbf2a223de49af8a31053a8b254, type: 3}
+  RightDead: {fileID: -6342038815969031122, guid: b0142dbf2a223de49af8a31053a8b254, type: 3}
+  UpDead: {fileID: 4823486311363802876, guid: b0142dbf2a223de49af8a31053a8b254, type: 3}
+  DownDead: {fileID: -8133215695192218540, guid: b0142dbf2a223de49af8a31053a8b254, type: 3}
+  CanMove: 0
+  PelletEaten: 0
+  GhostEaten: 0
+--- !u!58 &49226713665005443
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7663757516490502230}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
+--- !u!50 &2150851225279236088
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7663757516490502230}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

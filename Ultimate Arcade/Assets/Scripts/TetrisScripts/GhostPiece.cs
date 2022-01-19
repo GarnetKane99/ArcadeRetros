@@ -19,6 +19,8 @@ public class GhostPiece : MonoBehaviour
     //zOffset is used to calculate which rotation the block will be moving into
     public int zOffset = 0;
 
+    private bool ReachedBot = false;
+
     private void Awake()
     {
         CurrentPos = transform.position;
@@ -41,6 +43,10 @@ public class GhostPiece : MonoBehaviour
         TetrisGrid = found;
         CurrentPosition = TetrisGrid;
     }
+    private void Start()
+    {
+        BlockDescentFast();
+    }
 
     bool OnPlacedBlock(int x, int y)
     {
@@ -59,68 +65,42 @@ public class GhostPiece : MonoBehaviour
 
     void BlockDescentFast()
     {
-        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+        while (!ReachedBot)
         {
-            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+            for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
             {
-                if (TetrisGrid[x, y] == 1)
+                for (int x = 0; x < TetrisGrid.GetLength(0); x++)
                 {
-                    if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
+                    if (TetrisGrid[x, y] == 1)
                     {
-                        return;
+                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
+                        {
+                            ReachedBot = true;
+                            return;
+                        }
+                        else if (OnPlacedBlock(x, y))
+                        {
+                            ReachedBot = true;
+                            return;
+                        }
                     }
-                    else if (OnPlacedBlock(x, y))
+                }
+            }
+            yOffset--;
+
+            for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+            {
+                for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+                {
+                    if (TetrisGrid[x, y] == 1)
                     {
-                        return;
+                        GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
+                        CurrentPosition[x + xOffset, CurrentPosition.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
                     }
                 }
             }
+            CurrentPos.y -= 1;
+            gameObject.transform.position = CurrentPos;
         }
-        yOffset--;
-
-        for (int y = CurrentPosition.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < CurrentPosition.GetLength(0); x++)
-            {
-                if (CurrentPosition[x, y] == 1)
-                {
-                    GridManager.GridSize[x, y] = 0;
-                    CurrentPosition[x, y] = 0;
-                }
-            }
-        }
-
-        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
-            {
-                if (TetrisGrid[x, y] == 1)
-                {
-                    GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
-                    CurrentPosition[x + xOffset, CurrentPosition.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
-                }
-            }
-        }
-
-        CurrentPos.y -= 1;
-        gameObject.transform.position = CurrentPos;
-    }
-
-    void Update()
-    {
-        BlockDescentFast();
-
-        StringBuilder sb = new StringBuilder();
-        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
-            {
-                sb.Append(TetrisGrid[x, y]);
-                sb.Append(' ');
-            }
-            sb.AppendLine();
-        }
-
-        //Debug.Log(sb.ToString());
     }
 }

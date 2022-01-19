@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PacmanMapGenerator : MonoBehaviour
 {
@@ -11,16 +12,24 @@ public class PacmanMapGenerator : MonoBehaviour
     [SerializeField] private GameObject ParentMapObject, ParentNodeObject, PelletParent;
     [SerializeField] private GameObject Inky, Pinky, Blinky, Clyde, PacmanPrefab;
     [SerializeField] private PacmanAIManager AIManager;
+    [SerializeField] private GameObject GameOverScreen;
+
+    [SerializeField] private TextMeshProUGUI ScoreText, HighScoreText, LevelText;
+
+    private PacmanController PacCo;
+    private List<PacmanGhostController> Ghosts;
 
     public List<GameObject> NodeList;
     private List<GameObject> SpecialNode;
     int NodeCount = 0;
+    int PelletCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         NodeList = new List<GameObject>();
         SpecialNode = new List<GameObject>();
+        Ghosts = new List<PacmanGhostController>();
         InitializeMapCoordinates();
         StartCoroutine(CreateMap());
     }
@@ -61,6 +70,56 @@ public class PacmanMapGenerator : MonoBehaviour
         }
     }
 
+    public IEnumerator RespawnPellets()
+    {
+        for (int x = 0; x < MapCoordinates.GetLength(0); x++)
+        {
+            for (int y = 0; y < MapCoordinates.GetLength(1); y++)
+            {
+                switch (MapCoordinates[x, y])
+                {
+                    case 0:
+                        CreatePellet(y, x);
+                        yield return new WaitForSeconds(0.01f);
+                        break;
+                    case 51:
+                        RemakeLargePellet(y, x);
+                        yield return new WaitForSeconds(0.01f);
+                        break;
+                }
+
+                if(x == MapCoordinates.GetLength(0)-1 && y == MapCoordinates.GetLength(1) - 1)
+                {
+                    yield return new WaitForSeconds(1.0f);
+                    PacCo.GameWon = false;
+                    PacCo.PelletsEaten = PacCo.PelletCounter;
+
+                    int level = int.Parse(PacCo.LevelText.text) + 1;
+                    PacCo.LevelText.text = level.ToString();
+
+                    foreach(PacmanGhostController g in Ghosts)
+                    {
+                        g.CanMove = true;
+                        g.GhostSpeed++;
+                    }
+                    PacCo.GameStarted = true;
+                }
+            }
+        }
+    }
+
+    void CreatePellet(int x, int y)
+    {
+        GameObject Pellet = Instantiate(PACMAN_PELLET, new Vector2(x - 13, y - 7), Quaternion.identity);
+        Pellet.transform.parent = PelletParent.transform;
+    }
+
+    void RemakeLargePellet(int x, int y)
+    {
+        GameObject LargePellete = Instantiate(PACMAN_PELLET_LARGE, new Vector2(x - 13, y - 7), Quaternion.identity);
+        LargePellete.transform.parent = PelletParent.transform;
+    }
+
     void CreateNode(int x, int y)
     {
         GameObject Node = Instantiate(PACMAN_NODE, new Vector2(x - 13, y - 7), Quaternion.identity);
@@ -70,6 +129,7 @@ public class PacmanMapGenerator : MonoBehaviour
         NodeCount++;
         Pellet.transform.parent = PelletParent.transform;
         NodeList.Add(Node);
+        PelletCount++;
     }
 
     void CreateNodeToo(int x, int y)
@@ -166,6 +226,9 @@ public class PacmanMapGenerator : MonoBehaviour
 
         GameObject PacmanGO = Instantiate(PacmanPrefab, new Vector2(0.5f, 0), Quaternion.identity);
         PacmanController PacController = PacmanGO.GetComponent<PacmanController>();
+        PacController.PelletCounter = PelletCount;
+        PacController.PelletsEaten = PelletCount;
+        PacController.PacMap = this;
 
         yield return new WaitForSeconds(0.5f);
         
@@ -183,13 +246,39 @@ public class PacmanMapGenerator : MonoBehaviour
         PinkyController.Pacman = PacmanGO;
         ClydeController.Pacman = PacmanGO;
         InkyController.Pacman = PacmanGO;
+
+        BlinkyController.StartingNode = NodeToUse;
+        PinkyController.StartingNode = NodeToUse;
+        ClydeController.StartingNode = NodeToUse;
+        InkyController.StartingNode = NodeToUse;
+
+        PacController.GhostsInGame.Add(BlinkyController);
+        PacController.GhostsInGame.Add(PinkyController);
+        PacController.GhostsInGame.Add(ClydeController);
+        PacController.GhostsInGame.Add(InkyController);
+
+        PacController.ScoreText = ScoreText;
+        PacController.HighScoreText = HighScoreText;
+        PacController.LevelText = LevelText;
+
+        BlinkyController.SpecialNodes = SpecialNode;
+        PinkyController.SpecialNodes = SpecialNode;
+        ClydeController.SpecialNodes = SpecialNode;
+        InkyController.SpecialNodes = SpecialNode;
+
+        PacController.GameOverScreen = GameOverScreen;
+
+        PacCo = PacController;
+        Ghosts.Add(BlinkyController);
+        Ghosts.Add(PinkyController);
+        Ghosts.Add(InkyController);
+        Ghosts.Add(ClydeController);
     }
 
     void AddConnections(GameObject From, GameObject To)
     {
         From.GetComponent<PacNodeController>().ConnectedNodes.Add(To);
     }
-
 
     void InitializeMapCoordinates()
     {

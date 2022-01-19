@@ -286,57 +286,60 @@ public class TetrisPieceMovement : MonoBehaviour
 
     void BlockDescentFast()
     {
-        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
+        while (!StopDescent)
         {
-            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
+            for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
             {
-                if (TetrisGrid[x, y] == 1)
+                for (int x = 0; x < TetrisGrid.GetLength(0); x++)
                 {
-                    if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
+                    if (TetrisGrid[x, y] == 1)
                     {
-                        StopDescent = true;
-                        LastSecondChanges();
-                        return;
+                        if (GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset - 1 + y - 1] == 2)
+                        {
+                            StopDescent = true;
+                            LastSecondChanges();
+                            return;
+                        }
+                        else if (OnPlacedBlock(x, y))
+                        {
+                            StopDescent = true;
+                            LastSecondChanges();
+                            return;
+                        }
                     }
-                    else if (OnPlacedBlock(x, y))
+                }
+            }
+            OnExistingBlock = false;
+            allowedTimeOnBlock = 1.0f;
+            yOffset--;
+
+            for (int y = CurrentPosition.GetLength(1) - 1; y >= 0; y--)
+            {
+                for (int x = 0; x < CurrentPosition.GetLength(0); x++)
+                {
+                    if (CurrentPosition[x, y] == 1)
                     {
-                        StopDescent = true;
-                        LastSecondChanges();
-                        return;
+                        GridManager.GridSize[x, y] = 0;
+                        CurrentPosition[x, y] = 0;
                     }
                 }
             }
-        }
-        OnExistingBlock = false;
-        allowedTimeOnBlock = 1.0f;
-        yOffset--;
 
-        for (int y = CurrentPosition.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < CurrentPosition.GetLength(0); x++)
+            for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
             {
-                if (CurrentPosition[x, y] == 1)
+                for (int x = 0; x < TetrisGrid.GetLength(0); x++)
                 {
-                    GridManager.GridSize[x, y] = 0;
-                    CurrentPosition[x, y] = 0;
+                    if (TetrisGrid[x, y] == 1)
+                    {
+                        GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
+                        CurrentPosition[x + xOffset, CurrentPosition.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
+                    }
                 }
             }
-        }
 
-        for (int y = TetrisGrid.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < TetrisGrid.GetLength(0); x++)
-            {
-                if (TetrisGrid[x, y] == 1)
-                {
-                    GridManager.GridSize[x + xOffset, GridManager.GridSize.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
-                    CurrentPosition[x + xOffset, CurrentPosition.GetLength(1) + yOffset + y - 1] = TetrisGrid[x, y];
-                }
-            }
+            CurrentPos.y -= 1;
+            gameObject.transform.position = CurrentPos;
         }
-
-        CurrentPos.y -= 1;
-        gameObject.transform.position = CurrentPos;
     }
 
     void Update()
@@ -385,6 +388,7 @@ public class TetrisPieceMovement : MonoBehaviour
                 QuickPlaceSound.Play();
                 CancelInvoke("BlockDescent");
                 BlockDescentFast();
+                SpacePressed = false;
             }
         }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PacmanController : MonoBehaviour
 {
@@ -16,11 +17,24 @@ public class PacmanController : MonoBehaviour
 
     private float PacmanSpeed = 5;
 
-    [SerializeField] private GameObject Positive;
-
     private bool Up = false, Down = false, Left = false, Right = true;
+    public List<PacmanGhostController> GhostsInGame;
 
     public bool HasRotated = false;
+
+    float SpecialTimer = 0.0f;
+    bool PelletEaten = false;
+
+    public GameObject GameOverScreen;
+
+    public int Score = 0;
+    public TextMeshProUGUI ScoreText, LevelText, HighScoreText;
+    public int PelletCounter = default;
+    public int PelletsEaten = 0;
+
+    public bool GameWon = false;
+
+    public PacmanMapGenerator PacMap;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +49,20 @@ public class PacmanController : MonoBehaviour
     {
         if (GameStarted)
         {
+            if(PelletsEaten == 0)
+            {
+                GameStarted = false;
+                GameWon = true;
+                foreach(PacmanGhostController g in GhostsInGame)
+                {
+                    g.CanMove = false;
+                }
+                PacMap.StartCoroutine(PacMap.RespawnPellets());
+            }
+            if (PelletEaten)
+            {
+                CheckSpecialTimer();
+            }
             GetInput();
             CheckMovement();
             if (CanMove)
@@ -53,6 +81,22 @@ public class PacmanController : MonoBehaviour
         else
         {
             DontMove();
+        }
+    }
+
+    void CheckSpecialTimer()
+    {
+        if (SpecialTimer > 0.0f)
+        {
+            SpecialTimer -= Time.deltaTime;
+        }
+        else
+        {
+            PelletEaten = false;
+            foreach(PacmanGhostController g in GhostsInGame)
+            {
+                g.PelletEaten = false;
+            }
         }
     }
 
@@ -93,7 +137,6 @@ public class PacmanController : MonoBehaviour
                 PacSprite.flipX = false;
             }
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-            Positive.transform.localPosition = new Vector2(1.25f, 0);
             Up = true;
             Right = false;
             Down = false;
@@ -112,7 +155,6 @@ public class PacmanController : MonoBehaviour
             }
 
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-            Positive.transform.localPosition = new Vector2(1.25f, 0);
             Up = false;
             Right = false;
             Down = true;
@@ -128,7 +170,6 @@ public class PacmanController : MonoBehaviour
             }
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             PacSprite.flipX = true;
-            Positive.transform.localPosition = new Vector2(-1.25f, 0);
             Up = false;
             Right = false;
             Down = false;
@@ -143,7 +184,6 @@ public class PacmanController : MonoBehaviour
                 return;
             }
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            Positive.transform.localPosition = new Vector2(1.25f, 0);
             PacSprite.flipX = false;
 
             Up = false;
@@ -224,6 +264,40 @@ public class PacmanController : MonoBehaviour
     void DoMovement()
     {
         PacAnim.SetBool("Moving", true);
+        if(NextPos == new Vector2(0,11))
+        {
+            NextPos = new Vector2(0, 12);
+            CurrentPos = transform.position;
+            transform.position = NextPos;
+            IsMoving = false;
+            PacAnim.SetBool("Moving", false);
+            return;
+        }else if(NextPos == new Vector2(1, 11))
+        {
+            NextPos = new Vector2(1, 12);
+            CurrentPos = transform.position;
+            transform.position = NextPos;
+            IsMoving = false;
+            PacAnim.SetBool("Moving", false);
+            return;
+        }
+
+        if(NextPos.x >= 15)
+        {
+            NextPos = new Vector2(-13, 9);
+            CurrentPos = transform.position;
+            transform.position = NextPos;
+            IsMoving = false;
+            return;
+        }
+        else if(NextPos.x <= -14)
+        {
+            NextPos = new Vector2(14, 9);
+            CurrentPos = transform.position;
+            transform.position = NextPos;
+            IsMoving = false;
+            return;
+        }
 
         transform.position = Vector2.MoveTowards(transform.position, NextPos, PacmanSpeed * Time.deltaTime);
         CurrentPos = transform.position;
@@ -236,8 +310,39 @@ public class PacmanController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Pellet")
+        if (collision.tag == "Pellet" && !GameWon)
         {
+            PelletsEaten--;
+            Score += 100;
+            ScoreText.text = Score.ToString();
+            
+            if(Score > int.Parse(HighScoreText.text))
+            {
+                HighScoreText.text = Score.ToString();
+                PlayerPrefs.SetInt("PacmanHighScore", Score);
+            }
+
+            Destroy(collision.gameObject);
+        }
+        if(collision.tag == "Enemy" && !PelletEaten)
+        {
+            GameOverScreen.SetActive(true);
+            GameStarted = false;
+            PacAnim.SetBool("Dead", true);
+        }
+        else if(collision.tag =="Enemy" && PelletEaten)
+        {
+            collision.GetComponent<PacmanGhostController>().GhostEaten = true;
+        }
+        if(collision.tag == "LargePellet")
+        {
+            SpecialTimer = 8.0f;
+            PelletEaten = true;
+            foreach(PacmanGhostController g in GhostsInGame)
+            {
+                g.PelletEaten = true;
+                g.UpdateSprite();
+            }
             Destroy(collision.gameObject);
         }
     }

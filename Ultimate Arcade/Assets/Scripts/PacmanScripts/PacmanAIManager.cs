@@ -18,8 +18,8 @@ public class PacmanAIManager : MonoBehaviour
         foreach (GameObject Node in AllNodes)
         {
             Node.GetComponent<PacNodeController>().Visited = false;
-            Node.GetComponent<PacNodeController>().Distance = int.MaxValue;
-            Node.GetComponent<PacNodeController>().Previous = default;
+            //Node.GetComponent<PacNodeController>().Distance = int.MaxValue;
+            //Node.GetComponent<PacNodeController>().Previous = default;
         }
 
         Start.GetComponent<PacNodeController>().Visited = true;
@@ -83,6 +83,25 @@ public class PacmanAIManager : MonoBehaviour
                 NodeFound = Node;
             }
         }
+        return NodeFound;
+    }
+
+    public GameObject FindFurthestNode(Vector2 Pos, List<GameObject> AllNodes)
+    {
+        GameObject NodeFound = null;
+
+        float FurthestDist = float.MinValue;
+
+        foreach(GameObject Node in AllNodes)
+        {
+            float CurrentNodeDistance = Vector2.Distance(Pos, Node.transform.position);
+            if(CurrentNodeDistance > FurthestDist)
+            {
+                FurthestDist = CurrentNodeDistance;
+                NodeFound = Node;
+            }
+        }
+
         return NodeFound;
     }
 }
